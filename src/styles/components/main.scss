@@ -1,12 +1,14 @@
 @include block(main) {
-  // margin: 3em 0;
-  // width: calc(100% - 275px);
-  // margin: auto;
   padding-top: 3em;
   padding-bottom: 3em;
   @include xy-grid-container(1440px, 0);
-  width: 100%;
   @include xy-grid(horizontal, false);
+
+  // @include breakpoint(1280px down) {
+  //   @include xy-grid-container(1280px);
+  //   @include xy-grid(vertical, false);
+  //   @include flex-align(middle, center);
+  // }
 
   @include block(title) {
     font-style: normal;
@@ -25,7 +27,21 @@
   @include element(content) {
     @include xy-grid(vertical, false);
     padding-right: 3em;
-    width: 70%;
+    width: 900px;
+
+    @include breakpoint(large down) {
+      width: 600px;
+    }
+
+    @include breakpoint(1400px down) {
+      width: 800px;
+    }
+
+    // @include breakpoint(1280px down) {
+    //   @include xy-grid-container(1280px);
+    //   @include xy-grid(vertical, false);
+    //   padding-bottom: 3em;
+    // }
   }
 }
 

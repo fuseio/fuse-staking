@@ -15,14 +15,14 @@ const Shape = object().shape({
 })
 
 const TableHeader = ({ header, tooltipText, id }) => (
-  <>
-    {header}
+  <div className='grid-x align-middle'>
+    <span>{header}</span>
     &nbsp;
     <img src={InfoIcon} data-tip data-for={id} />
-    <ReactTooltip className='tooltip__content' id={id} place='bottom' effect='solid'>
+    <ReactTooltip className='tooltip' id={id} place='bottom' effect='solid'>
       <div>{tooltipText}</div>
     </ReactTooltip>
-  </>
+  </div>
 )
 
 const ValidatorsList = () => {
@@ -36,7 +36,7 @@ const ValidatorsList = () => {
       }
     ],
     address,
-    fee: isNaN(formatWeiToNumber(fee)) ? 0 : `${formatWei(fee) * 10} %`,
+    fee: isNaN(formatWeiToNumber(fee)) ? 0 : `${formatWei(fee) * 100} %`,
     delegators: delegatorsLength,
     upTime: upTime?.toString()?.substring(0, 4),
     stakeAmount,

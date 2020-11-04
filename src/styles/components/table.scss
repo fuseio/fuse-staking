@@ -37,6 +37,19 @@
       letter-spacing: 0.3px;
       text-transform: uppercase;
 
+      @include block(tooltip) {
+        background: $color-primary-dark;
+        border: 1px solid transparent;
+        border-radius: 5px;
+        max-width: 300px;
+        width: fit-content;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 13px;
+        color: $color-white;
+        text-transform: initial;
+      }
+
       @include element(sort) {
         margin-left: 5px;
       }

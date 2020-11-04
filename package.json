@@ -26,6 +26,9 @@
     "start": "npm run clean && webpack-dev-server --hot --mode development"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/react-fontawesome": "^0.1.12",
     "@svgr/webpack": "^5.4.0",
     "@toruslabs/torus-embed": "^1.8.3",
     "@walletconnect/web3-provider": "^1.0.0-beta.35",
@@ -42,7 +45,6 @@
     "react": "^16.14.0",
     "react-countup": "^4.3.3",
     "react-dom": "^16.14.0",
-    "react-fontawesome": "^1.7.1",
     "react-hot-loader": "^4.13.0",
     "react-modal": "^3.11.2",
     "react-modal-hook": "^3.0.0",
