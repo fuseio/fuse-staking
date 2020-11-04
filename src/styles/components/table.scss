@@ -24,13 +24,6 @@
     color: $color-black;
   }
 
-  @include block(avatar) {
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    margin-right: 1em;
-  }
-
   @include element(header) {
     height: 40px;
     border-bottom: solid 2px #eef3f6;
@@ -80,6 +73,13 @@
     @include element(cell) {
       font-size: 0.688em;
       color: $color-gray;
+
+      @include block(avatar) {
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        margin-right: 1em;
+      }
 
       @include block(row_checkbox) {
         display: none;

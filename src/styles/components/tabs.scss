@@ -6,6 +6,22 @@
   }
 
   @include element(wrapper) {
+    @include block(selected__validator) {
+      padding-bottom: 1em;
+      @include block(name) {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 1.375em;
+        color: $color-black;
+        margin-left: 0.5em;
+      }
+
+      @include block(avatar) {
+        width: 50px;
+        border-radius: 50%;
+        height: 50px;
+      }
+    }
     max-width: 353px;
     min-width: 353px;
     width: 100%;
@@ -95,27 +111,13 @@
   }
 }
 
-@include block(selected__validator) {
-  padding-bottom: 1em;
-  @include block(name) {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 1.375em;
-    color: $color-black;
-    margin-left: .5em;
-  }
-
-  @include block(avatar) {
-    width: 50px;
-    border-radius: 50%;
-    height: 50px;
-  }
-}
-
 @include block(gray_container) {
   position: relative;
   background: $color-disabled;
   border-radius: 8px;
+  padding: 1em;
+  @include xy-grid(vertical);
+  @include flex-align(justify, null);
 
   @include modifier(fix-width) {
     margin-top: 2em;
@@ -127,9 +129,6 @@
   @include breakpoint(small only) {
     width: 100%;
   }
-  padding: 1em;
-  @include xy-grid(vertical);
-  @include flex-align(justify, null);
 
   > div:not(:first-child) {
     margin-top: 1em;
