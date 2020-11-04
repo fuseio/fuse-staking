@@ -1,0 +1,18 @@
+@import "header";
+@import "main";
+@import "footer";
+@import "modal";
+@import "tabs";
+@import "table";
+@import "InfoBox";
+
+.site-wrapper {
+  position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  min-height: 100vh;
+  max-width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}

@@ -1,0 +1,233 @@
+@include block(header) {
+  @include xy-grid(horizontal, false);
+  @include flex-align(justify, middle);
+  height: 56px;
+  width: 100%;
+
+  @include element(nav) {
+    @include xy-grid(horizontal, false);
+    @include flex-align(right, middle);
+    color: #0a2f40;
+    font-size: 16rem;
+
+    @include breakpoint(medium down) {
+      display: none;
+    }
+
+    @include xy-cell(8, null, 0);
+
+    @include breakpoint(medium down) {
+      @include xy-cell(12, null, 0);
+    }
+
+    @include element(open) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 99;
+      visibility: visible;
+      background-color: $color-white;
+      display: flex;
+      flex-direction: column;
+      justify-content: normal;
+      padding: 0 0 60px;
+      border-radius: 0 0 60px 60px;
+      box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  @include element(link) {
+    text-decoration: none;
+    font-size: 0.938em;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: $color-primary-dark;
+    @include xy-grid();
+    @include flex-align(justify, middle);
+    @include breakpoint(medium up) {
+      margin-right: 1.3em;
+    }
+    &:hover {
+      text-decoration: underline;
+    }
+
+    @include breakpoint(medium down) {
+      &:not(:last-child) {
+        margin-bottom: 1em;
+      }
+    }
+
+    @include element(wrapper) {
+      @include xy-grid(horizontal);
+      @include breakpoint(medium down) {
+        margin: 4em 0 2em;
+        @include xy-grid(vertical);
+      }
+    }
+
+    @include breakpoint(medium down) {
+      font-size: 1.375em;
+    }
+
+    @include modifier(dark) {
+      color: #083549;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  @include element(wrapper) {
+    box-shadow: 0px 0px 30px rgba(21, 53, 80, 0.12);
+    display: block;
+    padding: 0 20px;
+    position: relative;
+    width: 100%;
+    height: min-content;
+  }
+  @include element(logo) {
+    width: 100px;
+    cursor: pointer;
+
+    @include xy-cell(8, null, 0);
+
+    @include breakpoint(medium down) {
+      @include xy-cell(12, null, 0);
+    }
+
+    @include breakpoint(small down) {
+      width: 80px;
+    }
+  }
+
+  @include element(icons) {
+    display: flex;
+    flex-direction: row;
+
+    @include breakpoint(medium down) {
+      margin-bottom: 2em;
+    }
+  }
+
+  @include element(wallet) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    border-radius: 100px;
+    padding: 0.8em;
+
+    @include modifier(logged-out) {
+      background: $color-primary-dark;
+
+      &:hover {
+        background: $color-light-dark;
+      }
+      .text {
+        color: $color-white;
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    @include modifier(logged-in) {
+      background: $color-white;
+      border: 2px solid $color-primary-dark;
+
+      .text {
+        color: $color-primary-dark;
+      }
+    }
+
+    @include block(icon) {
+      width: 23px;
+      height: 23px;
+    }
+
+    @include block(dot) {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #68ca1b;
+      margin: 8px 0px;
+    }
+
+    @include block(text) {
+      margin-left: 0.5em;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 0.938em;
+      line-height: 14px;
+      @include breakpoint(small down) {
+        font-size: 0.8em;
+      }
+    }
+  }
+}
+
+@include block(hamburger-button) {
+  @include element(container) {
+    @include breakpoint(medium up) {
+      display: none;
+    }
+    background-color: transparent;
+    position: relative;
+    flex: 0 0 auto;
+    display: block;
+    width: 25px;
+    height: 25px;
+    margin-left: auto;
+    z-index: 100;
+
+    span {
+      background: #052741;
+      border: none;
+      height: 2px;
+      width: 25px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: all 0.35s ease;
+      cursor: pointer;
+      &:nth-of-type(2) {
+        top: 11px;
+      }
+
+      &:nth-of-type(3) {
+        top: 22px;
+      }
+    }
+
+    @include modifier(white) {
+      span {
+        background: white;
+      }
+    }
+
+    &:hover {
+      opacity: 0.7;
+    }
+
+    &:focus,
+    :active {
+      outline: none;
+    }
+  }
+
+  @include element(top) {
+  }
+
+  @include element(middle) {
+  }
+
+  @include element(bottom) {
+  }
+}

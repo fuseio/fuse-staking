@@ -1,0 +1,80 @@
+@include block(info_box) {
+  width: 160px;
+  height: 112px;
+  padding: 0.7em;
+  border-radius: 16px;
+  @include breakpoint(large up) {
+    @include xy-cell(30%, null, 0);
+  }
+
+  @include breakpoint(medium down) {
+    @include xy-cell(24, null, 0);
+    margin: 1em 0;
+  }
+
+  @include xy-grid(vertical);
+  @include flex-align(justify, null);
+
+  @include modifier(disabled) {
+    background: $color-disabled;
+  }
+
+  @include modifier(apy) {
+    background: #ebeef9;
+  }
+
+  @include modifier(deposits) {
+    background: #ebf8fc;
+
+    @include breakpoint(large up) {
+      margin: 0 0.525rem;
+    }
+  }
+
+  @include modifier(rewards) {
+    background: #eafbec;
+  }
+
+  @include block(icons) {
+    @include xy-grid();
+    width: 100%;
+    @include flex-align(justify, middle);
+
+    @include block(item) {
+      cursor: pointer;
+    }
+  }
+
+  @include element(value) {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 0.938em;
+    line-height: 16px;
+    color: $color-black;
+    margin-bottom: 0.3em;
+
+    > a {
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    @include modifier(disabled) {
+      color: $color-dark-gray;
+    }
+  }
+
+  @include element(title) {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 0.563em;
+    line-height: 12px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    color: #7e8ab4;
+
+    @include modifier(disabled) {
+      color: #b2bcc4;
+    }
+  }
+}

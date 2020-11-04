@@ -1,0 +1,200 @@
+@include block(tabs) {
+  @include element(panel) {
+    margin-top: 2em;
+    @include xy-grid();
+    @include flex-align(spaced, middle);
+  }
+
+  @include element(wrapper) {
+    max-width: 353px;
+    min-width: 353px;
+    width: 100%;
+    background: $color-white;
+    padding: 1.5em;
+    height: fit-content;
+    box-shadow: 0px 0px 30px rgba(21, 53, 80, 0.12);
+    border-radius: 16px;
+  }
+
+  @include element(list) {
+    border-radius: 8px;
+    background: $color-disabled;
+    height: 56px;
+    @include xy-grid();
+    @include flex-align(justify, middle);
+    padding: 0.5em;
+  }
+
+  @include element(tab) {
+    height: 40px;
+    border-radius: 4px;
+    cursor: pointer;
+    @include xy-cell(12, null, 0);
+    @include xy-grid();
+    @include flex-align(spaced, middle);
+    > h1 {
+      font-weight: 500;
+      font-size: 0.938em;
+      line-height: 14px;
+      color: #b2bcc4;
+    }
+
+    @include modifier(not-selected) {
+      > h1 {
+        color: $color-primary-dark;
+      }
+    }
+
+    @include modifier(disabled) {
+      background: #d9e1e7;
+    }
+
+    @include modifier(selected) {
+      background: $color-primary-dark;
+
+      > h1 {
+        color: $color-white;
+      }
+    }
+  }
+}
+
+@include block(percent_wrapper) {
+  width: 252px;
+  margin-top: 2em;
+  @include block(percent_option) {
+    > input {
+      display: none;
+    }
+    cursor: pointer;
+    width: 55px;
+    height: 32px;
+    border: 2px solid $color-disabled;
+    box-sizing: border-box;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @include block(text) {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 0.75em;
+      color: $color-primary-dark;
+
+      @include modifier(disabled) {
+        color: $color-dark-gray;
+      }
+    }
+
+    &:hover {
+      border-color: $color-primary-dark;
+    }
+    @include modifier(selected) {
+    }
+  }
+}
+
+@include block(selected__validator) {
+  padding-bottom: 1em;
+  @include block(name) {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.375em;
+    color: $color-black;
+    margin-left: .5em;
+  }
+
+  @include block(avatar) {
+    width: 50px;
+    border-radius: 50%;
+    height: 50px;
+  }
+}
+
+@include block(gray_container) {
+  position: relative;
+  background: $color-disabled;
+  border-radius: 8px;
+
+  @include modifier(fix-width) {
+    margin-top: 2em;
+    @include breakpoint(medium up) {
+      width: 100%;
+    }
+  }
+
+  @include breakpoint(small only) {
+    width: 100%;
+  }
+  padding: 1em;
+  @include xy-grid(vertical);
+  @include flex-align(justify, null);
+
+  > div:not(:first-child) {
+    margin-top: 1em;
+  }
+
+  @include element(wrapper) {
+    margin-top: 2em;
+    width: 100%;
+    @include xy-grid(horizontal, false);
+    @include flex-align(justify, null);
+    > div {
+      @include xy-cell(49%, null, 0);
+      margin-top: 0;
+    }
+
+    @include breakpoint(small down) {
+      @include xy-grid(vertical, false);
+      > div {
+        @include xy-cell(24, null, 0);
+        margin-top: 0;
+
+        &:first-child {
+          margin-bottom: 1em;
+        }
+      }
+    }
+  }
+
+  @include block(tooltip) {
+    background: $color-primary-dark;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    max-width: 300px;
+    width: fit-content;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 0.813em;
+    line-height: 21px;
+    color: $color-white;
+  }
+
+  @include block(title) {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 0.563em;
+    line-height: 12px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    color: #869aac;
+  }
+
+  @include block(info) {
+    cursor: pointer;
+  }
+
+  @include block(value) {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 0.938em;
+    line-height: 16px;
+    color: $color-black;
+    // margin-top: 1em;
+
+    @include modifier(disabled) {
+      color: $color-dark-gray;
+    }
+  }
+}
