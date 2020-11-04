@@ -6,22 +6,6 @@
   }
 
   @include element(wrapper) {
-    @include block(selected__validator) {
-      padding-bottom: 1em;
-      @include block(name) {
-        font-style: normal;
-        font-weight: 500;
-        font-size: 1.375em;
-        color: $color-black;
-        margin-left: 0.5em;
-      }
-
-      @include block(avatar) {
-        width: 50px;
-        border-radius: 50%;
-        height: 50px;
-      }
-    }
     max-width: 353px;
     min-width: 353px;
     width: 100%;
@@ -75,6 +59,22 @@
   }
 }
 
+@include block(selected-validator) {
+  padding-bottom: 1em;
+  @include block(name) {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.375em;
+    color: $color-black;
+    margin-left: 0.5em;
+  }
+
+  @include block(avatar) {
+    width: 50px;
+    border-radius: 50%;
+    height: 50px;
+  }
+}
 @include block(percent_wrapper) {
   width: 252px;
   margin-top: 2em;

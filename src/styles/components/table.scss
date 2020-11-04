@@ -63,23 +63,17 @@
         color: #327384;
       }
 
-      &:hover {
-        cursor: pointer;
-        // border-bottom: none;
-        // box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
-      }
-    }
-
-    @include element(cell) {
-      font-size: 0.688em;
-      color: $color-gray;
-
       @include block(avatar) {
         border-radius: 50%;
         width: 20px;
         height: 20px;
         margin-right: 1em;
       }
+    }
+
+    @include element(cell) {
+      font-size: 0.688em;
+      color: $color-gray;
 
       @include block(row_checkbox) {
         display: none;

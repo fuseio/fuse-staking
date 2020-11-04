@@ -11,7 +11,7 @@ const SelectedValidator = () => {
   return (
     has(validatorData, 'name')
       ? (
-        <div className='selected__validator grid-x align-middle'>
+        <div className='selected-validator grid-x align-middle'>
           <img className='avatar' src={`data:image/png;base64,${new Identicon(get(validatorData, 'address')).toString()}`} />
           <div className='name'>{get(validatorData, 'name')}</div>
         </div>
