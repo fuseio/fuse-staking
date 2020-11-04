@@ -104,12 +104,14 @@ export default ({ handleConnect }) => {
   ), [modalStatus])
 
   useEffect(() => {
-    if (networkId !== 122) {
-      showModal()
-      setModalStatus(true)
-    }
-    if (networkId === 122) {
-      setModalStatus(false)
+    if (networkId) {
+      if (networkId !== 122) {
+        showModal()
+        setModalStatus(true)
+      }
+      if (networkId === 122) {
+        setModalStatus(false)
+      }
     }
   }, [networkId])
 
