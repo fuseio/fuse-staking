@@ -134,10 +134,8 @@ export default ({ handleConnect }) => {
             )}
           />
           <InfoBox
-            link='https://app.uniswap.org/#/add/0x970B9bB2C0444F5E81e9d0eFb84C8ccdcdcAf84d/ETH'
             name='deposits'
             symbol='FUSE'
-            modalText='Your Deposits - Your deposits shows the total amount of FUSE you have deposited into the Staking Contract.'
             title='Balance'
             end={formatWeiToNumber(balanceOfNative)}
             Icon={() => (
@@ -145,11 +143,9 @@ export default ({ handleConnect }) => {
             )}
           />
           <InfoBox
-            link='https://etherscan.io/token/0x970B9bB2C0444F5E81e9d0eFb84C8ccdcdcAf84d'
             name='rewards'
             symbol='FUSE'
-            modalText={"Accrued Rewards - Accrued Rewards refers to the total FUSE you've earned for your stake"}
-            end={formatWeiToNumber(totalStakeAmount)}
+            end={isNaN(formatWeiToNumber(totalStakeAmount)) ? 0 : formatWeiToNumber(totalStakeAmount)}
             title='Total staked'
             Icon={() => (
               <img src={metricIcon} />
