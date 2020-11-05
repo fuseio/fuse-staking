@@ -3,8 +3,11 @@
   height: 112px;
   padding: 0.7em;
   border-radius: 16px;
+  @include xy-grid(vertical);
+  @include flex-align(justify, null);
+
   @include breakpoint(large up) {
-    @include xy-cell(30%, null, 0);
+    @include xy-cell(5, null, 0);
   }
 
   @include breakpoint(medium down) {
@@ -12,11 +15,16 @@
     margin: 1em 0;
   }
 
-  @include xy-grid(vertical);
-  @include flex-align(justify, null);
-
   @include modifier(disabled) {
     background: $color-disabled;
+  }
+
+  @include modifier(large) {
+    @include xy-cell(50%, null, 0);
+
+    @include breakpoint(medium down) {
+      @include xy-cell(24, null, 0);
+    }
   }
 
   @include modifier(apy) {
@@ -35,6 +43,11 @@
     background: #eafbec;
   }
 
+  @include block(line) {
+    border-left: 2px solid #7eb485;
+    height: 100%;
+  }
+
   @include block(icons) {
     @include xy-grid();
     width: 100%;
@@ -42,6 +55,14 @@
 
     @include block(item) {
       cursor: pointer;
+    }
+  }
+
+  @include block(content) {
+    height: 40px;
+
+    > div {
+      height: 100%;
     }
   }
 

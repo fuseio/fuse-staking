@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import get from 'lodash/get'
 import ReactModal from 'react-modal'
@@ -6,6 +6,7 @@ import { useModal } from 'react-modal-hook'
 import ValidatorsList from '@/components/ValidatorsList'
 import Tabs from '@/components/Tabs'
 import InfoBox from '@/components/common/InfoBox'
+import LargeInfoBox from '@/components/common/LargeInfoBox'
 import briefcaseIcon from '@/assets/images/briefcase-check.svg'
 import SwitchToFuse from '@/assets/images/step_1.png'
 import SwitchToFuseGuide from '@/assets/images/step_2.png'
@@ -14,6 +15,7 @@ import blockCubeIcon from '@/assets/images/block_cude.svg'
 import useInterval from '@/hooks/useInterval'
 import { formatWeiToNumber } from '@/utils/format'
 import { getBlockNumber } from '@/actions/consensus'
+import BigNumber from 'bignumber.js'
 
 export default ({ handleConnect }) => {
   const dispatch = useDispatch()
@@ -21,6 +23,9 @@ export default ({ handleConnect }) => {
   const { totalStakeAmount } = useSelector(state => state.consensus)
   const accounts = useSelector(state => state.accounts)
   const balanceOfNative = get(accounts, [accountAddress, 'balanceOfNative'], 0)
+  const validators = useSelector(state => state.entities.validators)
+
+  const myTotal = useMemo(() => Object.values(validators).reduce((accumulator, { yourStake }) => accumulator.plus(new BigNumber(yourStake)), new BigNumber(0)), [validators])
 
   const [modalStatus, setModalStatus] = useState(false)
   const [secondModalStatus, setSecondModalStatus] = useState(false)
@@ -142,11 +147,13 @@ export default ({ handleConnect }) => {
               <img src={briefcaseIcon} />
             )}
           />
-          <InfoBox
+          <LargeInfoBox
             name='rewards'
             symbol='FUSE'
-            end={isNaN(formatWeiToNumber(totalStakeAmount)) ? 0 : formatWeiToNumber(totalStakeAmount)}
-            title='Total staked'
+            end={isNaN(formatWeiToNumber(myTotal)) ? 0 : formatWeiToNumber(myTotal)}
+            secondEnd={isNaN(formatWeiToNumber(totalStakeAmount)) ? 0 : formatWeiToNumber(totalStakeAmount)}
+            title='Your total staked'
+            secondTitle='Total staked'
             Icon={() => (
               <img src={metricIcon} />
             )}

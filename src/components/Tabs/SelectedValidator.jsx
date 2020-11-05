@@ -7,6 +7,18 @@ import Identicon from 'identicon.js'
 import { addressShortener } from '@/utils/format'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
+import ContentLoader from 'react-content-loader'
+
+const AvatarWithText = props => (
+  <ContentLoader viewBox='0 0 400 100' height='100%' width='100%' {...props}>
+    <rect x='110' y='21' rx='4' ry='4' width='254' height='6' />
+    <rect x='111' y='41' rx='3' ry='3' width='185' height='7' />
+    <rect x='304' y='-46' rx='3' ry='3' width='350' height='6' />
+    <rect x='371' y='-45' rx='3' ry='3' width='380' height='6' />
+    <rect x='484' y='-45' rx='3' ry='3' width='201' height='6' />
+    <circle cx='50' cy='50' r='40' />
+  </ContentLoader>
+)
 
 const SelectedValidator = () => {
   const { validator } = useSelector(state => state.screens.stake)
@@ -36,7 +48,7 @@ const SelectedValidator = () => {
           </div>
         </div>
       )
-      : null
+      : <AvatarWithText />
   )
 }
 

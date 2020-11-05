@@ -1,8 +1,8 @@
 @include block(table) {
   width: 100%;
-  min-height: 500px;
-  height: 500px;
-  max-height: 500px;
+  // min-height: 500px;
+  // height: 500px;
+  // max-height: 500px;
 
   @include element(wrapper) {
     display: block;
@@ -63,7 +63,9 @@
     @include element(row) {
       position: relative;
       height: 47px;
-      border-bottom: solid 2px #eef3f6;
+      &:not(:last-child) {
+        border-bottom: solid 2px #eef3f6;
+      }
 
       @include block(address) {
         font-style: normal;

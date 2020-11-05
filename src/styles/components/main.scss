@@ -4,12 +4,6 @@
   @include xy-grid-container(1440px, 0);
   @include xy-grid(horizontal, false);
 
-  // @include breakpoint(1280px down) {
-  //   @include xy-grid-container(1280px);
-  //   @include xy-grid(vertical, false);
-  //   @include flex-align(middle, center);
-  // }
-
   @include block(title) {
     font-style: normal;
     font-weight: 500;
@@ -22,6 +16,10 @@
     margin-bottom: 1em;
     @include xy-grid(horizontal);
     @include flex-align(justify, null);
+
+    @include breakpoint(large down) {
+      @include xy-grid(vertical);
+    }
   }
 
   @include element(content) {
@@ -36,12 +34,6 @@
     @include breakpoint(1400px down) {
       width: 800px;
     }
-
-    // @include breakpoint(1280px down) {
-    //   @include xy-grid-container(1280px);
-    //   @include xy-grid(vertical, false);
-    //   padding-bottom: 3em;
-    // }
   }
 }
 
