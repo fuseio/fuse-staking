@@ -1,12 +1,12 @@
 const webpack = require('webpack')
 const path = require('path')
+const config = require('config')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const WebappWebpackPlugin = require('webapp-webpack-plugin')
-const config = require('config')
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 const isDev = process.env.NODE_ENV === 'development'
 const sourceMap = isDev
@@ -121,13 +121,13 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new ProgressBarPlugin(),
     new webpack.DefinePlugin({ CONFIG: JSON.stringify(config) }),
-    new WebappWebpackPlugin({
+    new FaviconsWebpackPlugin({
       logo: path.join(path.resolve(__dirname, './'), '/src/assets/images/favicon.png'),
       prefix: 'images/favicons/',
       favicons: {
         appName: 'Fuse Staking',
         appDescription: 'Fuse Staking DApp',
-        developerName: null,
+        developerName: 'Lior Agnin',
         developerURL: null,
         icons: {
           android: true,
