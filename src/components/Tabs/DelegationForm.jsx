@@ -8,14 +8,25 @@ import GrayContainer from '@/components/common/GrayContainer.jsx'
 import PercentageSelector from './PercentageSelector'
 import get from 'lodash/get'
 import capitalize from 'lodash/capitalize'
-import { toWei, formatWei } from '@/utils/format'
+import { toWei, formatWei, formatWeiToNumber } from '@/utils/format'
 import walletIcon from '@/assets/images/wallet.svg'
 import FuseLoader from '@/assets/images/loader-fuse.gif'
+import BigNumber from 'bignumber.js'
+
+const BLOCKS_IN_YEAR = 6307200
 
 const Scheme = object().noUnknown(false).shape({
   amount: number().positive(),
   submitType: mixed().oneOf(['stake', 'unstake']).required().default('stake')
 })
+
+const calcRewardPerYourBlocks = (rewardPerBlock, stakeAmount, numberOfValidators, totalStakeAmount, fee) => {
+  return new BigNumber(rewardPerBlock)
+    .multipliedBy(new BigNumber(stakeAmount))
+    .multipliedBy(numberOfValidators)
+    .div(new BigNumber(totalStakeAmount))
+    .multipliedBy((1 - fee))
+}
 
 export default ({ submitType, handleConnect }) => {
   const dispatch = useDispatch()
@@ -23,9 +34,10 @@ export default ({ submitType, handleConnect }) => {
   const accounts = useSelector(state => state.accounts)
   const validators = useSelector(state => state.entities.validators)
   const { validator, isWithdraw, isDelegate } = useSelector(state => state.screens.stake)
+  const { totalStakeAmount, numberOfValidators, rewardPerBlock } = useSelector(state => state.consensus)
   const balanceOfNative = get(accounts, [accountAddress, 'balanceOfNative'], 0)
-  const validatorData = get(validators, validator)
   const yourStake = get(validators, [validator, 'yourStake'], 0)
+  const fee = get(validators, [validator, 'fee'], 0)
 
   const onSubmit = (values, formikBag) => {
     const { amount, submitType } = values
@@ -39,7 +51,19 @@ export default ({ submitType, handleConnect }) => {
   const renderForm = ({ dirty, isValid, values }) => {
     const { submitType, amount } = values
     const balanceToShow = submitType === 'stake' ? balanceOfNative : yourStake
-    const estimatedAPR = get(validatorData, 'totalRewardPerYear') / amount
+
+    const rewardPerYourBlocks = calcRewardPerYourBlocks(
+      rewardPerBlock,
+      toWei(amount),
+      numberOfValidators,
+      totalStakeAmount,
+      formatWei(fee)
+    )
+
+    const average = rewardPerYourBlocks.div(numberOfValidators)
+    const rewardPerYear = average.multipliedBy(BLOCKS_IN_YEAR) // (525600).multipliedBy(12)
+    const estimatedAPR = rewardPerYear.div(amount) // * 100
+
     return (
       <Form className='form'>
         <div className='input__wrapper'>
@@ -63,11 +87,11 @@ export default ({ submitType, handleConnect }) => {
         {
           submitType === 'stake' && (
             <GrayContainer
-              tootlipText='Your estimated rewards reflect the amount of $FUSE you are expected to receive by the end of the program assuming there are no changes in deposits.'
               modifier='gray_container--fix-width'
-              symbol='%'
+              symbol='FUSE'
+              val={isNaN(estimatedAPR) ? 0 : (formatWeiToNumber(estimatedAPR) * 100).toFixed(1)}
               title='Project rewards (1Y)'
-              end={isNaN(estimatedAPR) ? 0 : parseInt(estimatedAPR)}
+              end={isNaN(rewardPerYear) ? 0 : formatWeiToNumber(rewardPerYear)}
             />
           )
         }

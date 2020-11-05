@@ -220,6 +220,11 @@
     cursor: pointer;
   }
 
+  @include block(apy) {
+    font-size: 12px;
+    color: #869aac;
+  }
+
   @include block(value) {
     font-style: normal;
     font-weight: 500;

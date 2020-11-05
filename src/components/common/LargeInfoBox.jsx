@@ -48,7 +48,7 @@ export default ({ Icon, name, title, end, secondEnd, withSymbol = true, symbol, 
           }
           <div className={classNames('info_box__title', { 'info_box__title--disabled': !accountAddress })}>{title}</div>
         </div>
-        <div class='line' />
+        <div className='line' />
         <div className='cell small-11 grid-y align-justify'>
           {
             withSymbol

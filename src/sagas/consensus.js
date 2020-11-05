@@ -7,10 +7,7 @@ import { Consensus as ConsensusABI, BlockReward as BlockRewardABI } from '@/cons
 import keyBy from 'lodash/keyBy'
 import pick from 'lodash/pick'
 import { balanceOfNative } from '@/actions/accounts'
-import { formatWei } from '@/utils/format'
 import { fetchNodeByAddress, fetchDelegatedNodes } from '@/services/api/boot'
-
-const NUMBER_OF_BLOCKS_IN_MONTHS = 525600
 
 function * getTotalStakeAmount () {
   const web3 = yield getWeb3()
@@ -80,7 +77,7 @@ function * fetchValidatorMetadata ({ address }) {
 function * watchGetValidators ({ response: { entities } }) {
   for (const validatorAddress in entities) {
     yield put(actions.fetchValidatorMetadata(validatorAddress))
-    yield put(actions.getBlockRewardAmountPerValidator(validatorAddress))
+    // yield put(actions.getBlockRewardAmountPerValidator(validatorAddress))
   }
 }
 
@@ -146,19 +143,12 @@ function * getBlockRewardAmountPerValidator ({ address }) {
   const web3 = yield getWeb3()
   const blockRewardContract = new web3.eth.Contract(BlockRewardABI, CONFIG.blockRewardAddress)
   const rewardPerYourBlock = yield call(blockRewardContract.methods.getBlockRewardAmountPerValidator(address).call)
-  const { numberOfValidators } = yield select(state => state.consensus)
-  const averageRewardPerBlock = formatWei(rewardPerYourBlock) / numberOfValidators // new BigNumber().dividedBy(numberOfValidators)
-  const rewardPerMonth = averageRewardPerBlock * NUMBER_OF_BLOCKS_IN_MONTHS
-  const totalRewardPerYear = rewardPerMonth * 12
   yield put({
     type: actions.GET_BLOCK_REWARD_AMOUNT_PER_VALIDATOR.SUCCESS,
     entity: 'validators',
     response: {
       address,
-      rewardPerYourBlock,
-      averageRewardPerBlock,
-      rewardPerMonth,
-      totalRewardPerYear
+      rewardPerYourBlock
     }
   })
 }
