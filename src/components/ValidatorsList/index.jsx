@@ -28,7 +28,15 @@ const TableHeader = ({ header, tooltipText, id }) => (
 const ValidatorsList = () => {
   const entities = useSelector(state => state.entities.validators)
 
-  const data = useMemo(() => map(entities, ({ yourStake, name, address, fee, delegatorsLength, stakeAmount, upTime }) => ({
+  const data = useMemo(() => map(entities, ({
+    yourStake,
+    name,
+    address,
+    fee,
+    delegatorsLength,
+    stakeAmount,
+    upTime
+  }) => ({
     name: [
       {
         name: <div className='address'>{name}</div>,

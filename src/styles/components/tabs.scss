@@ -61,12 +61,47 @@
 
 @include block(selected-validator) {
   padding-bottom: 1em;
+
+  @include block(content) {
+    margin-left: 0.5em;
+  }
+
   @include block(name) {
     font-style: normal;
     font-weight: 500;
     font-size: 1.375em;
     color: $color-black;
-    margin-left: 0.5em;
+  }
+
+  @include block(address) {
+    font-size: 0.9em;
+    color: $color-gray;
+    position: relative;
+
+    @include block(copy) {
+      cursor: pointer;
+      margin-left: 0.2em;
+      font-weight: 100;
+
+      &:hover {
+        font-weight: 500;
+      }
+    }
+
+    @include block(copied_tooltip) {
+      position: absolute;
+      width: 100px;
+      height: 40px;
+      padding: 11px;
+      background: $color-primary-dark;
+      color: $color-white;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      text-align: center;
+      top: -50px;
+      left: 50px;
+      fontsize: 14px;
+    }
   }
 
   @include block(avatar) {
@@ -75,6 +110,7 @@
     height: 50px;
   }
 }
+
 @include block(percent_wrapper) {
   width: 252px;
   margin-top: 2em;
