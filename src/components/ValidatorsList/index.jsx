@@ -75,7 +75,6 @@ const TableLoader = props => (
   </ContentLoader>
 )
 
-
 const Shape = object().shape({
   validator: string()
 })
