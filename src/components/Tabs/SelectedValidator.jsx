@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux'
 import useClipboard from 'react-use-clipboard'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
-import Identicon from 'identicon.js'
 import { addressShortener } from '@/utils/format'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
 import ContentLoader from 'react-content-loader'
+import { addDefaultSrc } from '@/utils/images'
 
 const AvatarWithText = props => (
   <ContentLoader viewBox='0 0 400 100' height='100%' width='100%' {...props}>
@@ -31,7 +31,7 @@ const SelectedValidator = () => {
     !isEmpty(validatorData)
       ? (
         <div className='selected-validator grid-x align-middle'>
-          <img className='avatar' src={`data:image/png;base64,${new Identicon(address).toString()}`} />
+          <img className='avatar' src={`${CONFIG.api.boot}/getNodeLogo=${address}`} onError={(e) => addDefaultSrc(e, address)} />
           <div className='grid-y align-top content'>
             <div className='name'>{name}</div>
             <div className='address'>

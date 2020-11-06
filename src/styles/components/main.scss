@@ -26,6 +26,9 @@
     @include xy-grid(vertical, false);
     padding-right: 3em;
     width: 900px;
+    @include breakpoint(large up) {
+      min-height: 520px;
+    }
 
     @include breakpoint(large down) {
       width: 600px;
