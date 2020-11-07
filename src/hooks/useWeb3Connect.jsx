@@ -11,7 +11,9 @@ const providerOptions = {
     package: Torus,
     options: {
       networkParams: {
-        host: 'mainnet'
+        host: 'https://rpc.fuse.io',
+        networkName: 'fuse',
+        chainId: 122
       },
       enableLogging: isDev,
       buttonPosition: 'top-right',
