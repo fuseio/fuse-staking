@@ -12,7 +12,6 @@ const providerOptions = {
     options: {
       networkParams: {
         host: 'https://rpc.fuse.io',
-        networkName: 'fuse',
         chainId: 122
       },
       enableLogging: isDev,
