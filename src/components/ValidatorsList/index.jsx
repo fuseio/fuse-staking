@@ -5,7 +5,6 @@ import { object, string, boolean } from 'yup'
 import map from 'lodash/map'
 import filter from 'lodash/filter'
 import sortBy from 'lodash/sortBy'
-import isEmpty from 'lodash/isEmpty'
 import Table from '@/components/common/Table'
 import TableHeader from '@/components/common/Table/TableHeader'
 import TableLoader from '@/components/common/Table/TableLoader'
@@ -75,7 +74,7 @@ const ValidatorsList = () => {
     },
     {
       accessor: 'upTime',
-      Header: <TableHeader header='% (Up time)' tooltipText='The % of blocks filled since each validator has been live.' id='upTime' />
+      Header: <TableHeader header='Up time' tooltipText='The % of blocks filled since each validator has been live.' id='upTime' />
     },
     {
       accessor: 'isOpen',
