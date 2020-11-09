@@ -6,10 +6,15 @@ const TableHeader = ({ header, tooltipText, id }) => (
   <div className='grid-x align-middle'>
     <span>{header}</span>
     &nbsp;
-    <img src={InfoIcon} data-tip data-for={id} />
-    <ReactTooltip className='tooltip' id={id} place='bottom' effect='solid'>
-      <div>{tooltipText}</div>
-    </ReactTooltip>
+    {tooltipText && (
+      <>
+        <img src={InfoIcon} data-tip data-for={id} />
+        <ReactTooltip className='tooltip' id={id} place='bottom' effect='solid'>
+          <div>{tooltipText}</div>
+        </ReactTooltip>
+      </>
+    )}
+
   </div>
 )
 

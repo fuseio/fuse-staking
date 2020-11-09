@@ -112,7 +112,6 @@
 
     @include element(cell) {
       font-size: 0.688em;
-      white-space: nowrap;
       color: #869aac;
       font-weight: 500;
       line-height: 14px;
@@ -186,7 +185,6 @@
 
       @include block(row_checkbox) {
         display: none;
-        margin-left: 10px;
         &:hover {
           display: none;
         }
@@ -223,7 +221,6 @@
         position: absolute;
         border: solid 1px #c5c5c5;
         border-radius: 100%;
-        margin-left: 10px;
         height: 16px;
         width: 16px;
         left: 20px;

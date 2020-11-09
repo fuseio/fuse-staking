@@ -45,7 +45,7 @@ export default ({
       {row.cells.map(cell => {
         const { column: { id }, value } = cell
         const className = id === 'checkbox' || id === 'dropdown'
-          ? 'table__body__cell cell small-2'
+          ? 'table__body__cell cell small-1'
           : `table__body__cell cell grid-x align-middle small-${Math.ceil(24 / row.cells.length)}`
         if (id === 'name' && isArray(value)) {
           return (

@@ -78,7 +78,7 @@ const ValidatorsList = () => {
     },
     {
       accessor: 'isOpen',
-      Header: <TableHeader header='Open for delegation' tooltipText='' id='isOpen' />,
+      Header: <TableHeader header='Open for delegation' id='isOpen' />,
       Cell: ({ row: { values: { isOpen } } }) => isOpen ? 'Yes' : 'No'
     }
   ], [])
