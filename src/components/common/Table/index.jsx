@@ -6,6 +6,8 @@ import ArrowRight from '@/assets/images/arrow_right.svg'
 import { Field } from 'formik'
 import BodyRow from './BodyRow'
 import HeaderRow from './HeaderRow'
+import ShowOnlyDelegators from './ShowOnlyDelegators'
+import ShowOnlyStaked from './ShowOnlyStaked'
 
 const IndeterminateRadio = React.forwardRef(
   ({ indeterminate, fieldName, updateMyData, index, value, onChange, disabled, ...rest }, ref) => {
@@ -94,8 +96,10 @@ const MyTable = ({
 
   return (
     <div className='table__wrapper'>
-      <div className='table__actions'>
+      <div className='table__actions grid-x align-justify align-middle'>
         <div className='table__title'>Validators</div>
+        <ShowOnlyStaked />
+        <ShowOnlyDelegators />
       </div>
       <table {...getTableProps({ className: 'table' })}>
         <thead>

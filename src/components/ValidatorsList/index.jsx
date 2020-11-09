@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Formik, Form, useFormikContext } from 'formik'
-import { object, string } from 'yup'
+import { object, string, boolean } from 'yup'
 import map from 'lodash/map'
+import filter from 'lodash/filter'
 import sortBy from 'lodash/sortBy'
 import isEmpty from 'lodash/isEmpty'
 import Table from '@/components/common/Table'
@@ -13,37 +14,48 @@ import { formatWei, formatWeiToNumber, addressShortener } from '@/utils/format'
 import { addDefaultSrc } from '@/utils/images'
 
 const Shape = object().shape({
-  validator: string()
+  validator: string(),
+  showOnlyDelegators: boolean(),
+  showOnlyStaked: boolean()
 })
 
 const ValidatorsList = () => {
+  const { isLoading } = useSelector(state => state.consensus)
   const entities = useSelector(state => state.entities.validators)
-  const { setFieldValue, submitForm } = useFormikContext()
+  const { setFieldValue, submitForm, values } = useFormikContext()
+  const { showOnlyDelegators, showOnlyStaked } = values
 
-  const data = useMemo(() => sortBy(map(entities, ({
-    yourStake,
-    name,
-    address,
-    fee,
-    delegatorsLength,
-    stakeAmount,
-    upTime,
-    forDelegation
-  }) => ({
-    name: [
-      {
-        name: <div className='address'>{name || addressShortener(address)}</div>,
-        image: <img className='avatar' src={`${CONFIG.api.boot}/getNodeLogo=${address}`} onError={(e) => addDefaultSrc(e, address)} />
-      }
-    ],
-    address,
-    fee: isNaN(formatWeiToNumber(fee)) ? 0 : `${formatWei(fee) * 100} %`,
-    delegators: delegatorsLength,
-    upTime: upTime?.toString()?.substring(0, 4),
-    stakeAmount,
-    yourStake,
-    isOpen: forDelegation
-  })), [(o) => { return !o.isOpen }]), [entities])
+  const data = useMemo(() => {
+    const rawData = showOnlyDelegators
+      ? filter(entities, ['forDelegation', 1])
+      : showOnlyStaked
+        ? filter(entities, ({ yourStake }) => yourStake && yourStake !== '0')
+        : entities
+    return sortBy(map(rawData, ({
+      yourStake,
+      name,
+      address,
+      fee,
+      delegatorsLength,
+      stakeAmount,
+      upTime,
+      forDelegation
+    }) => ({
+      name: [
+        {
+          name: <div className='address'>{name || addressShortener(address)}</div>,
+          image: <img className='avatar' src={`${CONFIG.api.boot}/getNodeLogo=${address}`} onError={(e) => addDefaultSrc(e, address)} />
+        }
+      ],
+      address,
+      fee: isNaN(formatWeiToNumber(fee)) ? 0 : `${formatWei(fee) * 100} %`,
+      delegators: delegatorsLength,
+      upTime: `${upTime?.toString()?.substring(0, 4)} %`,
+      stakeAmount,
+      yourStake,
+      isOpen: forDelegation
+    })), [({ isOpen }) => !isOpen])
+  }, [entities, showOnlyDelegators, showOnlyStaked])
 
   const columns = useMemo(() => [
     {
@@ -63,19 +75,19 @@ const ValidatorsList = () => {
     },
     {
       accessor: 'upTime',
-      Header: <TableHeader header='Up time %' tooltipText='The % of blocks filled since each validator has been live.' id='upTime' />
+      Header: <TableHeader header='% (Up time)' tooltipText='The % of blocks filled since each validator has been live.' id='upTime' />
     },
     {
       accessor: 'isOpen',
       Header: <TableHeader header='Open for delegation' tooltipText='' id='isOpen' />,
-      Cell: ({ row: { values: { isOpen } } }) => (isOpen ? 'Yes' : 'No')
+      Cell: ({ row: { values: { isOpen } } }) => isOpen ? 'Yes' : 'No'
     }
   ], [])
 
   return (
     <div className='validator__list grid-y'>
       {
-        isEmpty(data)
+        isLoading
           ? <TableLoader />
           : (
             <Table

@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import classNames from 'classnames'
 import { formatWeiToNumber } from '@/utils/format'
-import { Field } from 'formik'
+import { Field, useFormikContext } from 'formik'
 
 const percentValues = [25, 50, 75, 100]
 
@@ -10,6 +10,8 @@ const calculate = (value, total) => (value / 100) * total
 
 const PercentOption = ({ value, balance }) => {
   const { accountAddress } = useSelector(state => state.network)
+  const { values: { submitType } } = useFormikContext()
+  const percent = submitType === 'stake' && value === 100 ? 99 : value
   return (
     <label className='percent_option'>
       <Field>
@@ -20,7 +22,7 @@ const PercentOption = ({ value, balance }) => {
               type='radio'
               onChange={(e) => {
                 field.onChange(e)
-                setFieldValue('amount', calculate(value, formatWeiToNumber(balance)))
+                setFieldValue('amount', calculate(percent, formatWeiToNumber(balance)))
               }}
               name='percent'
               value={value}
