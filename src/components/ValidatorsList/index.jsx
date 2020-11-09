@@ -1,14 +1,15 @@
 import React, { useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Formik, Form } from 'formik'
+import { Formik, Form, useFormikContext } from 'formik'
 import { object, string } from 'yup'
 import map from 'lodash/map'
+import sortBy from 'lodash/sortBy'
 import isEmpty from 'lodash/isEmpty'
 import Table from '@/components/common/Table'
 import TableHeader from '@/components/common/Table/TableHeader'
 import TableLoader from '@/components/common/Table/TableLoader'
 import { selectValidator } from '@/actions/consensus'
-import { formatWei, formatWeiToNumber } from '@/utils/format'
+import { formatWei, formatWeiToNumber, addressShortener } from '@/utils/format'
 import { addDefaultSrc } from '@/utils/images'
 
 const Shape = object().shape({
@@ -17,19 +18,21 @@ const Shape = object().shape({
 
 const ValidatorsList = () => {
   const entities = useSelector(state => state.entities.validators)
+  const { setFieldValue, submitForm } = useFormikContext()
 
-  const data = useMemo(() => map(entities, ({
+  const data = useMemo(() => sortBy(map(entities, ({
     yourStake,
     name,
     address,
     fee,
     delegatorsLength,
     stakeAmount,
-    upTime
+    upTime,
+    forDelegation
   }) => ({
     name: [
       {
-        name: <div className='address'>{name}</div>,
+        name: <div className='address'>{name || addressShortener(address)}</div>,
         image: <img className='avatar' src={`${CONFIG.api.boot}/getNodeLogo=${address}`} onError={(e) => addDefaultSrc(e, address)} />
       }
     ],
@@ -38,8 +41,9 @@ const ValidatorsList = () => {
     delegators: delegatorsLength,
     upTime: upTime?.toString()?.substring(0, 4),
     stakeAmount,
-    yourStake
-  })), [entities])
+    yourStake,
+    isOpen: forDelegation
+  })), [(o) => { return !o.isOpen }]), [entities])
 
   const columns = useMemo(() => [
     {
@@ -55,15 +59,16 @@ const ValidatorsList = () => {
     },
     {
       accessor: 'fee',
-      Header: <TableHeader header='Fee cut' tooltipText='The % of the block rewards each validator takes.' id='fee' />
+      Header: <TableHeader header='Fee' tooltipText='The % of the block rewards each validator takes.' id='fee' />
     },
     {
       accessor: 'upTime',
-      Header: <TableHeader header='Up time' tooltipText='The % of blocks filled since each validator has been live.' id='upTime' />
+      Header: <TableHeader header='Up time %' tooltipText='The % of blocks filled since each validator has been live.' id='upTime' />
     },
     {
-      accessor: 'delegators',
-      Header: <TableHeader header='Delegators' tooltipText='The amount of delegators staked to each validator.' id='delegators' />
+      accessor: 'isOpen',
+      Header: <TableHeader header='Open for delegation' tooltipText='' id='isOpen' />,
+      Cell: ({ row: { values: { isOpen } } }) => (isOpen ? 'Yes' : 'No')
     }
   ], [])
 
@@ -74,6 +79,12 @@ const ValidatorsList = () => {
           ? <TableLoader />
           : (
             <Table
+              handleClick={({ original: { address }, values: { isOpen } }) => {
+                if (isOpen) {
+                  setFieldValue('validator', address)
+                  setTimeout(submitForm, 3)
+                }
+              }}
               columns={columns}
               data={data}
               count={Object.keys(entities).length}

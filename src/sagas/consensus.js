@@ -5,7 +5,6 @@ import { getWeb3 } from '@/services/web3'
 import { transactionFlow } from './transaction'
 import { Consensus as ConsensusABI, BlockReward as BlockRewardABI } from '@/constants/abi'
 import keyBy from 'lodash/keyBy'
-import pick from 'lodash/pick'
 import { balanceOfNative } from '@/actions/accounts'
 import { fetchNodeByAddress, fetchDelegatedNodes } from '@/services/api/boot'
 
@@ -26,9 +25,8 @@ function * getValidators () {
   const consensusContract = new web3.eth.Contract(ConsensusABI, CONFIG.consensusAddress)
   const validators = yield call(consensusContract.methods.getValidators().call)
   const delegatedNodes = yield call(fetchDelegatedNodes)
-  const validatorsKeys = keyBy(validators, (address) => address)
+  const entities = keyBy(validators, (address) => address)
   const propsToPick = Object.keys(delegatedNodes)
-  const entities = pick(validatorsKeys, propsToPick)
   yield put(actions.selectValidator(propsToPick[0]))
   yield put({
     type: actions.GET_VALIDATORS.SUCCESS,

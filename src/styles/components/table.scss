@@ -66,6 +66,14 @@
         border-bottom: solid 2px #eef3f6;
       }
 
+      @include modifier(open) {
+        cursor: pointer;
+      }
+
+      @include modifier(close) {
+        background-color: $color-lighter-gray;
+      }
+
       @include block(address) {
         font-style: normal;
         font-weight: 500;
@@ -88,6 +96,11 @@
     @include element(cell) {
       font-size: 0.688em;
       color: $color-gray;
+
+      @include modifier(disabled) {
+        pointer-events: none;
+        cursor: not-allowed;
+      }
 
       @include block(row_checkbox) {
         display: none;
@@ -115,6 +128,12 @@
         height: 20px;
         z-index: 9;
         cursor: pointer;
+
+        @include modifier(disabled) {
+          pointer-events: none;
+          cursor: not-allowed;
+        }
+
         -webkit-transition: all 0.25s linear;
       }
       @include block(check) {
