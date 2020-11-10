@@ -171,7 +171,6 @@
           font-size: 12px !important;
           font-weight: normal !important;
           color: $color-gray !important;
-          text-decoration-line: unset !important;
         }
       }
 
@@ -182,8 +181,11 @@
         line-height: 16px;
         display: flex;
         align-items: center;
-        text-decoration-line: underline;
         color: #327384;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
 
       @include block(avatar) {

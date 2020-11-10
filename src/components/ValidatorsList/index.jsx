@@ -40,11 +40,12 @@ const ValidatorsList = () => {
       delegatorsLength,
       stakeAmount,
       upTime,
-      forDelegation
+      forDelegation,
+      website
     }) => ({
       name: [
         {
-          name: <div className='address'>{name || addressShortener(address)}</div>,
+          name: <a target='_blank' rel='noopener noreferrer' style={{ marginLeft: '5px' }} href={website} className='address'>{name || addressShortener(address)}</a>,
           image: <img className='avatar' src={`${CONFIG.api.boot}/getNodeLogo=${address}`} onError={(e) => addDefaultSrc(e, address)} />
         }
       ],
@@ -54,6 +55,7 @@ const ValidatorsList = () => {
       upTime: `${upTime?.toString()?.substring(0, 4)} %`,
       stakeAmount,
       yourStake,
+      website,
       isOpen: forDelegation
     })), [({ isOpen }) => !isOpen])
   }, [entities, showOnlyDelegators, showOnlyStaked])
@@ -97,7 +99,7 @@ const ValidatorsList = () => {
           ? <TableLoader />
           : (
             <Table
-              handleClick={({ original: { address }, values: { isOpen } }) => {
+              handleClick={({ original: { address, isOpen } }) => {
                 if (isOpen) {
                   setFieldValue('validator', address)
                   setTimeout(submitForm, 3)

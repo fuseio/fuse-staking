@@ -18,7 +18,7 @@ export default ({
     )
   }
   const { validator } = useSelector(state => state.screens.stake)
-  const { values: { isOpen }, original: { address } } = row
+  const { original: { address, isOpen } } = row
 
   const [props, set] = useSpring(() => ({
     transform: 'scale(1)',
