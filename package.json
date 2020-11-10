@@ -23,7 +23,7 @@
     "clean": "rm -rf ./dist",
     "build:dist": "npm run clean && cross-env NODE_ENV=production webpack -p",
     "start:dist": "npm run clean && cross-env NODE_ENV=production webpack-dev-server --hot && http-server ./dist -o",
-    "start": "npm run clean && webpack-dev-server --hot --mode development"
+    "start": "npm run clean && webpack-dev-server --hot --mode development --open"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",

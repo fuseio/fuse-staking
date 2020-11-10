@@ -157,6 +157,7 @@ function * watchStakingSuccess () {
   const { accountAddress } = yield select(state => state.network)
   if (accountAddress) {
     yield put(balanceOfNative(accountAddress))
+    yield put(actions.getTotalStakeAmount())
     yield put(actions.getValidators())
   }
 }
