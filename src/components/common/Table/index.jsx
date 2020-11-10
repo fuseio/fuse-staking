@@ -1,46 +1,11 @@
 import React from 'react'
-import classNames from 'classnames'
-import { useTable, usePagination, useSortBy, useRowSelect } from 'react-table'
+import { useTable, usePagination, useSortBy } from 'react-table'
 import ArrowLeft from '@/assets/images/arrow_left.svg'
 import ArrowRight from '@/assets/images/arrow_right.svg'
-import { Field } from 'formik'
 import BodyRow from './BodyRow'
 import HeaderRow from './HeaderRow'
 import ShowOnlyDelegators from './ShowOnlyDelegators'
 // import ShowOnlyStaked from './ShowOnlyStaked'
-
-const IndeterminateRadio = React.forwardRef(
-  ({ indeterminate, fieldName, updateMyData, index, value, disabled, ...rest }, ref) => {
-    const defaultRef = React.useRef()
-    const resolvedRef = ref || defaultRef
-
-    React.useEffect(() => {
-      resolvedRef.current.indeterminate = indeterminate
-    }, [resolvedRef, indeterminate])
-
-    return (
-      <label className={classNames('label', { 'label--disabled': disabled })}>
-        <Field type='radio' name='validator' value={value}>
-          {({ field, form: { setFieldValue, submitForm } }) => (
-            <input
-              className='row_checkbox'
-              {...rest}
-              {...field}
-              type='radio'
-              id={value}
-              disabled={disabled}
-              ref={resolvedRef}
-              onChange={(e) => {
-                setTimeout(submitForm, 3)
-              }}
-            />
-          )}
-        </Field>
-        <div className='check' />
-      </label>
-    )
-  }
-)
 
 const MyTable = ({
   columns,
@@ -71,21 +36,11 @@ const MyTable = ({
     },
     useSortBy,
     usePagination,
-    useRowSelect,
     hooks => {
       hooks.visibleColumns.push(columns => [
         {
           id: 'checkbox',
-          Cell: ({ row }) => {
-            const { original: { address }, values: { isOpen } } = row
-            return (
-              <IndeterminateRadio
-                {...row.getToggleRowSelectedProps()}
-                value={address}
-                disabled={!isOpen}
-              />
-            )
-          }
+          Cell: ({ row: { index } }) => <div className='number'>{index + 1}</div>
         },
         ...columns
       ])

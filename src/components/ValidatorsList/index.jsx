@@ -25,11 +25,13 @@ const ValidatorsList = () => {
   const { showOnlyDelegators, showOnlyStaked } = values
 
   const data = useMemo(() => {
-    const rawData = showOnlyDelegators
-      ? filter(entities, ['forDelegation', 1])
-      : showOnlyStaked
-        ? filter(entities, ({ yourStake }) => yourStake && yourStake !== '0')
-        : entities
+    const rawData = showOnlyDelegators && showOnlyStaked
+      ? filter(entities, ({ yourStake, forDelegation }) => yourStake && yourStake !== '0' && forDelegation)
+      : showOnlyDelegators
+        ? filter(entities, ['forDelegation', 1])
+        : showOnlyStaked
+          ? filter(entities, ({ yourStake }) => yourStake && yourStake !== '0')
+          : entities
     return sortBy(map(rawData, ({
       yourStake,
       name,
@@ -80,6 +82,13 @@ const ValidatorsList = () => {
       accessor: 'isOpen',
       Header: <TableHeader header='Open for delegation' id='isOpen' />,
       Cell: ({ row: { values: { isOpen } } }) => isOpen ? 'Yes' : 'No'
+    },
+    {
+      id: 'dropdown',
+      accessor: '',
+      Cell: ({ row: { values: { isOpen } } }) => (
+        <button className='button'><span>Stake</span></button>
+      )
     }
   ], [])
 
@@ -103,7 +112,6 @@ const ValidatorsList = () => {
             />
           )
       }
-
     </div>
   )
 }
@@ -114,7 +122,14 @@ const SelectValidatorForm = () => {
   const onSubmit = (values, formikBag) => {
     const { validator } = values
     dispatch(selectValidator(validator))
+    formikBag.resetForm({ values })
   }
+
+  React.useEffect(() => {
+    if (validator) {
+      dispatch(selectValidator(validator))
+    }
+  }, [])
 
   const renderForm = () => {
     return (
@@ -127,12 +142,12 @@ const SelectValidatorForm = () => {
   return (
     <Formik
       initialValues={{
-        validator
+        validator,
+        showOnlyDelegators: true
       }}
       onSubmit={onSubmit}
       validationSchema={Shape}
       render={renderForm}
-      enableReinitialize
     />
   )
 }

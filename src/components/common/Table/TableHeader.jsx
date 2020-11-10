@@ -9,7 +9,7 @@ const TableHeader = ({ header, tooltipText, id }) => (
     {tooltipText && (
       <>
         <img src={InfoIcon} data-tip data-for={id} />
-        <ReactTooltip className='tooltip' id={id} place='bottom' effect='solid'>
+        <ReactTooltip className='tooltip' id={id} place='top' effect='solid'>
           <div>{tooltipText}</div>
         </ReactTooltip>
       </>

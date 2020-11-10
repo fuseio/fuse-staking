@@ -94,7 +94,7 @@ function * checkNetworkType ({ web3, accountAddress }) {
       response
     })
     yield put(balanceOfNative(accountAddress))
-    yield put(getValidators())
+    yield put(getValidators(true))
     yield put(getTotalStakeAmount())
     yield put(getBlockRewardAmount())
     yield put(actions.getBlockNumber())

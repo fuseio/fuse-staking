@@ -15,7 +15,7 @@ export const SELECT_VALIDATOR = 'SELECT_VALIDATOR'
 export const fetchValidatorMetadata = (address) => validatorsAction(FETCH_VALIDATOR_METADATA.REQUEST, { address })
 export const getBlockRewardAmountPerValidator = (address) => validatorsAction(GET_BLOCK_REWARD_AMOUNT_PER_VALIDATOR.REQUEST, { address })
 export const getTotalStakeAmount = () => requestAction(GET_TOTAL_STAKE_AMOUNT)
-export const getValidators = () => requestAction(GET_VALIDATORS)
+export const getValidators = (initial = false) => requestAction(GET_VALIDATORS, { initial })
 export const getBlockRewardAmount = () => requestAction(GET_BLOCK_REWARD_AMOUNT)
 export const getBlockNumber = () => requestAction(GET_BLOCK_NUMBER)
 

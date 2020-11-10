@@ -20,14 +20,16 @@ function * getTotalStakeAmount () {
   })
 }
 
-function * getValidators () {
+function * getValidators ({ initial }) {
   const web3 = yield getWeb3()
   const consensusContract = new web3.eth.Contract(ConsensusABI, CONFIG.consensusAddress)
   const validators = yield call(consensusContract.methods.getValidators().call)
-  const delegatedNodes = yield call(fetchDelegatedNodes)
   const entities = keyBy(validators, (address) => address)
-  const propsToPick = Object.keys(delegatedNodes)
-  yield put(actions.selectValidator(propsToPick[0]))
+  if (initial) {
+    const delegatedNodes = yield call(fetchDelegatedNodes)
+    const propsToPick = Object.keys(delegatedNodes)
+    yield put(actions.selectValidator(propsToPick[0]))
+  }
   yield put({
     type: actions.GET_VALIDATORS.SUCCESS,
     response: {
