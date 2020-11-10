@@ -21,7 +21,8 @@ function * getTotalStakeAmount () {
 }
 
 function * getValidators ({ initial }) {
-  const web3 = yield getWeb3()
+  const { networkId } = yield select(state => state.network)
+  const web3 = yield getWeb3({ networkType: (!networkId || networkId !== 122) ? 'fuse' : null })
   const consensusContract = new web3.eth.Contract(ConsensusABI, CONFIG.consensusAddress)
   const validators = yield call(consensusContract.methods.getValidators().call)
   const entities = keyBy(validators, (address) => address)
@@ -39,18 +40,18 @@ function * getValidators ({ initial }) {
   })
 }
 
-function * fetchValidatorData ({ validatorAddress }) {
-  const { accountAddress } = yield select(state => state.network)
-  const web3 = yield getWeb3()
+function * fetchValidatorData ({ address }) {
+  const { networkId, accountAddress } = yield select(state => state.network)
+  const web3 = yield getWeb3({ networkType: (!networkId || networkId !== 122) ? 'fuse' : null })
   const consensusContract = new web3.eth.Contract(ConsensusABI, CONFIG.consensusAddress)
   const calls = {
-    stakeAmount: call(consensusContract.methods.stakeAmount(validatorAddress).call),
-    fee: call(consensusContract.methods.validatorFee(validatorAddress).call),
-    delegatorsLength: call(consensusContract.methods.delegatorsLength(validatorAddress).call)
+    stakeAmount: call(consensusContract.methods.stakeAmount(address).call),
+    fee: call(consensusContract.methods.validatorFee(address).call),
+    delegatorsLength: call(consensusContract.methods.delegatorsLength(address).call)
   }
 
   if (accountAddress) {
-    calls.yourStake = call(consensusContract.methods.delegatedAmount(accountAddress, validatorAddress).call)
+    calls.yourStake = call(consensusContract.methods.delegatedAmount(accountAddress, address).call)
   }
 
   const response = yield all(calls)
@@ -60,7 +61,7 @@ function * fetchValidatorData ({ validatorAddress }) {
 
 function * fetchValidatorMetadata ({ address }) {
   const response = yield call(fetchNodeByAddress, { address })
-  const validatorData = yield call(fetchValidatorData, { validatorAddress: address })
+  const validatorData = yield call(fetchValidatorData, { address })
   yield put({
     type: actions.FETCH_VALIDATOR_METADATA.SUCCESS,
     entity: 'validators',
@@ -77,7 +78,6 @@ function * fetchValidatorMetadata ({ address }) {
 function * watchGetValidators ({ response: { entities } }) {
   for (const validatorAddress in entities) {
     yield put(actions.fetchValidatorMetadata(validatorAddress))
-    // yield put(actions.getBlockRewardAmountPerValidator(validatorAddress))
   }
 }
 

@@ -2,8 +2,6 @@ import { all, fork, call, put, takeEvery, select, take } from 'redux-saga/effect
 import { toChecksumAddress } from 'web3-utils'
 import { getWeb3 as getWeb3Service } from '@/services/web3'
 import * as actions from '@/actions/network'
-import { balanceOfNative } from '@/actions/accounts'
-import { getValidators, getTotalStakeAmount, getBlockRewardAmount } from '@/actions/consensus'
 import { getProviderInfo } from 'web3modal'
 import { eventChannel } from 'redux-saga'
 
@@ -93,11 +91,6 @@ function * checkNetworkType ({ web3, accountAddress }) {
       type: actions.CHECK_NETWORK_TYPE.SUCCESS,
       response
     })
-    yield put(balanceOfNative(accountAddress))
-    yield put(getValidators(true))
-    yield put(getTotalStakeAmount())
-    yield put(getBlockRewardAmount())
-    yield put(actions.getBlockNumber())
   } catch (error) {
     yield put({ type: actions.CHECK_NETWORK_TYPE.FAILURE, error })
     yield put({

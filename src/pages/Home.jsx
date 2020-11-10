@@ -14,21 +14,26 @@ import metricIcon from '@/assets/images/metric.svg'
 import blockCubeIcon from '@/assets/images/block_cude.svg'
 import useInterval from '@/hooks/useInterval'
 import { formatWeiToNumber } from '@/utils/format'
-import { getBlockNumber } from '@/actions/consensus'
 import BigNumber from 'bignumber.js'
+import { balanceOfNative } from '@/actions/accounts'
+import { getValidators, getTotalStakeAmount, getBlockRewardAmount, getBlockNumber } from '@/actions/consensus'
 
 export default ({ handleConnect }) => {
   const dispatch = useDispatch()
   const { accountAddress, blockNumber = 0, networkId } = useSelector(state => state.network)
   const { totalStakeAmount } = useSelector(state => state.consensus)
   const accounts = useSelector(state => state.accounts)
-  const balanceOfNative = get(accounts, [accountAddress, 'balanceOfNative'], 0)
+  const balance = get(accounts, [accountAddress, 'balanceOfNative'], 0)
   const validators = useSelector(state => state.entities.validators)
 
   const myTotal = useMemo(() => Object.values(validators).reduce((accumulator, { yourStake }) => accumulator.plus(new BigNumber(yourStake)), new BigNumber(0)), [validators])
 
   const [modalStatus, setModalStatus] = useState(false)
   const [secondModalStatus, setSecondModalStatus] = useState(false)
+
+  useEffect(() => {
+    dispatch(getValidators(true))
+  }, [])
 
   const [showSecondModal] = useModal(() => (
     <ReactModal isOpen={secondModalStatus} overlayClassName='modal__overlay' className='modal__content'>
@@ -109,7 +114,17 @@ export default ({ handleConnect }) => {
   ), [modalStatus])
 
   useEffect(() => {
+    dispatch(balanceOfNative(accountAddress))
+  }, [accountAddress])
+
+  useEffect(() => {
     if (networkId) {
+      if (accountAddress) {
+        dispatch(balanceOfNative(accountAddress))
+      }
+      dispatch(getTotalStakeAmount())
+      dispatch(getBlockRewardAmount())
+      dispatch(getBlockNumber())
       if (networkId !== 122) {
         showModal()
         setModalStatus(true)
@@ -142,7 +157,7 @@ export default ({ handleConnect }) => {
             name='deposits'
             symbol='FUSE'
             title='Balance'
-            end={formatWeiToNumber(balanceOfNative)}
+            end={formatWeiToNumber(balance)}
             Icon={() => (
               <img src={briefcaseIcon} />
             )}
