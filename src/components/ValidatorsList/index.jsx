@@ -26,11 +26,11 @@ const ValidatorsList = () => {
 
   const data = useMemo(() => {
     const rawData = showOnlyDelegators && showOnlyStaked
-      ? filter(entities, ({ yourStake, forDelegation }) => yourStake && yourStake !== '0' && forDelegation)
+      ? filter(entities, ({ yourStake, forDelegation }) => !!Number(yourStake) && forDelegation)
       : showOnlyDelegators
         ? filter(entities, ['forDelegation', 1])
         : showOnlyStaked
-          ? filter(entities, ({ yourStake }) => yourStake && yourStake !== '0')
+          ? filter(entities, ({ yourStake }) => !!Number(yourStake))
           : entities
     return sortBy(map(rawData, ({
       yourStake,
