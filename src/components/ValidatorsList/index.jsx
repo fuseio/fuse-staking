@@ -86,9 +86,7 @@ const ValidatorsList = () => {
     {
       id: 'dropdown',
       accessor: '',
-      Cell: ({ row: { values: { isOpen } } }) => (
-        <button className='button'><span>Stake</span></button>
-      )
+      Cell: (rowInfo) => <button className='button'><span>Stake</span></button>
     }
   ], [])
 
