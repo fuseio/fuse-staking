@@ -101,7 +101,7 @@
     &:disabled {
       background-color: $color-disabled;
       cursor: not-allowed;
-      color: $color-primary-dark;
+      color: $color-dark-gray;
     }
 
     img {
@@ -146,6 +146,9 @@
       border-radius: 8px;
       padding: 0 16px;
 
+      &:disabled {
+        cursor: not-allowed;
+      }
       &::placeholder {
         font-size: 0.938em;
         color: $color-dark-gray;

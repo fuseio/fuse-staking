@@ -1,8 +1,17 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { object, number, mixed, string } from 'yup'
+import classNames from 'classnames'
+import { withFormik, Form } from 'formik'
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs'
 import { useSelector } from 'react-redux'
 import DelegationForm from './DelegationForm'
 import SelectedValidator from './SelectedValidator'
+
+const Scheme = object().noUnknown(false).shape({
+  amount: number().positive().required(),
+  validator: string().required(),
+  submitType: mixed().oneOf(['stake', 'unstake']).required().default('stake')
+})
 
 const CustomTab = ({ children, ...otherProps }) => (
   <Tab {...otherProps}>
@@ -20,25 +29,58 @@ const CustomTabPanel = ({ children, className, ...otherProps }) => (
 
 CustomTabPanel.tabsRole = 'TabPanel'
 
-const TabsWrapper = ({ handleConnect }) => {
+const FormWrapper = ({ handleConnect, setFieldValue }) => {
   const { accountAddress } = useSelector(state => state.network)
+  const [tabIndex, setTabIndex] = useState(0)
+  const { validator } = useSelector(state => state.screens.stake)
+
+  useEffect(() => {
+    setFieldValue('validator', validator)
+  }, [validator])
+
   return (
-    <div className='tabs__wrapper'>
+    <Form className='tabs__wrapper'>
       <SelectedValidator />
-      <Tabs className='tabs' selectedTabClassName={accountAddress ? 'tabs__tab--selected' : 'tabs__tab--disabled'}>
+      <Tabs
+        selectedIndex={tabIndex}
+        className='tabs'
+        selectedTabClassName={accountAddress && validator ? 'tabs__tab--selected' : 'tabs__tab--disabled'}
+        onSelect={(index) => {
+          setTabIndex(index)
+          setFieldValue('submitType', index === 0 ? 'stake' : 'unstake')
+          setFieldValue('amount', '')
+        }}
+      >
         <TabList className='tabs__list'>
-          <CustomTab className='tabs__tab'>Stake</CustomTab>
-          <CustomTab className='tabs__tab'>Unstake</CustomTab>
+          <CustomTab className={classNames('tabs__tab', { 'tabs__tab--not-selected': !validator && tabIndex === 0 })}>Stake</CustomTab>
+          <CustomTab className={classNames('tabs__tab', { 'tabs__tab--not-selected': !validator && tabIndex === 1 })}>Unstake</CustomTab>
         </TabList>
         <CustomTabPanel className='tabs__panel'>
-          <DelegationForm handleConnect={handleConnect} submitType='stake' />
+          <DelegationForm handleConnect={handleConnect} />
         </CustomTabPanel>
         <CustomTabPanel className='tabs__panel'>
-          <DelegationForm handleConnect={handleConnect} submitType='unstake' />
+          <DelegationForm handleConnect={handleConnect} />
         </CustomTabPanel>
       </Tabs>
-    </div>
+    </Form>
   )
 }
 
-export default TabsWrapper
+const MyEnhancedForm = withFormik({
+  mapPropsToValues: ({ validator }) => ({
+    amount: '',
+    validator,
+    submitType: 'stake'
+  }),
+  enableReinitialize: true,
+  validateOnChange: true,
+  validationSchema: Scheme,
+  handleSubmit: (values, { props }) => {
+    const { onSubmit } = props
+    const { amount, submitType } = values
+    onSubmit({ amount, submitType })
+  },
+  displayName: 'DelegationForm'
+})(FormWrapper)
+
+export default MyEnhancedForm

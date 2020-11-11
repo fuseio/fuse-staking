@@ -10,16 +10,18 @@ const calculate = (value, total) => (value / 100) * total
 
 const PercentOption = ({ value, balance }) => {
   const { accountAddress } = useSelector(state => state.network)
+  const { validator } = useSelector(state => state.screens.stake)
   const { values: { submitType } } = useFormikContext()
   const percent = submitType === 'stake' && value === 100 ? 99 : value
   return (
-    <label className='percent_option'>
+    <label className={classNames('percent_option', { 'percent_option--disabled': !accountAddress || !validator })}>
       <Field>
         {({ field, form: { setFieldValue } }) => (
           <>
             <input
               {...field}
               type='radio'
+              disabled={!accountAddress || !validator}
               onChange={(e) => {
                 field.onChange(e)
                 setFieldValue('amount', calculate(percent, formatWeiToNumber(balance)))
@@ -27,7 +29,7 @@ const PercentOption = ({ value, balance }) => {
               name='percent'
               value={value}
             />
-            <span className={classNames('text', { 'text--disabled': !accountAddress })}>{value} %</span>
+            <span className={classNames('text', { 'text--disabled': !accountAddress || !validator })}>{value} %</span>
           </>
         )}
       </Field>

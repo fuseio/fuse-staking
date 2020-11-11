@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga'
 import React, { useState, useEffect, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import get from 'lodash/get'
@@ -13,10 +14,10 @@ import SwitchToFuseGuide from '@/assets/images/step_2.png'
 import metricIcon from '@/assets/images/metric.svg'
 import blockCubeIcon from '@/assets/images/block_cude.svg'
 import useInterval from '@/hooks/useInterval'
-import { formatWeiToNumber } from '@/utils/format'
+import { formatWeiToNumber, toWei } from '@/utils/format'
 import BigNumber from 'bignumber.js'
 import { balanceOfNative } from '@/actions/accounts'
-import { getValidators, getTotalStakeAmount, getBlockRewardAmount, getBlockNumber } from '@/actions/consensus'
+import { withdraw, delegate, getValidators, getTotalStakeAmount, getBlockRewardAmount, getBlockNumber } from '@/actions/consensus'
 
 export default ({ handleConnect }) => {
   const dispatch = useDispatch()
@@ -24,7 +25,9 @@ export default ({ handleConnect }) => {
   const { totalStakeAmount } = useSelector(state => state.consensus)
   const accounts = useSelector(state => state.accounts)
   const balance = get(accounts, [accountAddress, 'balanceOfNative'], 0)
+  const { validator } = useSelector(state => state.screens.stake)
   const validators = useSelector(state => state.entities.validators)
+  const yourStake = get(validators, [validator, 'yourStake'], 0)
 
   const myTotal = useMemo(() => Object.values(validators).reduce((accumulator, { yourStake }) => accumulator.plus(new BigNumber(yourStake)), new BigNumber(0)), [validators])
 
@@ -139,6 +142,19 @@ export default ({ handleConnect }) => {
     dispatch(getBlockNumber())
   }, 10000)
 
+  const onSubmit = ({ amount, submitType }) => {
+    if (submitType === 'stake') {
+      dispatch(delegate(validator, toWei(amount)))
+    } else if (submitType === 'unstake') {
+      dispatch(withdraw(validator, toWei(amount)))
+    }
+    ReactGA.event({
+      category: 'action',
+      action: `Action - ${submitType}`,
+      label: `${submitType} ${amount} into pool: ${get(validators, [validator, 'name'])} ${validator} `
+    })
+  }
+
   return (
     <div className='main'>
       <div className='main__content'>
@@ -176,7 +192,7 @@ export default ({ handleConnect }) => {
         </div>
         <ValidatorsList />
       </div>
-      <Tabs handleConnect={handleConnect} />
+      <Tabs handleConnect={handleConnect} yourStake={yourStake} balance={balance} onSubmit={onSubmit} />
     </div>
   )
 }
