@@ -45,7 +45,7 @@ const ValidatorsList = () => {
     }) => ({
       name: [
         {
-          name: <a target='_blank' rel='noopener noreferrer' style={{ marginLeft: '5px' }} href={website} className='address'>{name || addressShortener(address)}</a>,
+          name: <div className='address'>{name || addressShortener(address)}</div>,
           image: <img className='avatar' src={`${CONFIG.api.boot}/getNodeLogo=${address}`} onError={(e) => addDefaultSrc(e, address)} />
         }
       ],
@@ -81,9 +81,9 @@ const ValidatorsList = () => {
       Header: <TableHeader header='Up time' tooltipText='The % of blocks filled since each validator has been live.' id='upTime' />
     },
     {
-      accessor: 'isOpen',
-      Header: <TableHeader header='Open for delegation' id='isOpen' />,
-      Cell: ({ row: { values: { isOpen } } }) => isOpen ? 'Yes' : 'No'
+      accessor: 'website',
+      Header: <TableHeader header='website' id='website' />,
+      Cell: ({ row: { values: { website } } }) => website.includes('soon') ? <div className='link'>{website}</div> : <a target='_blank' rel='noopener noreferrer' onClick={(e) => e.stopPropagation()} href={website} className='link link--hover'>{website}</a>
     },
     {
       id: 'dropdown',

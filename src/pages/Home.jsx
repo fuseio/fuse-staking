@@ -32,7 +32,7 @@ export default ({ handleConnect }) => {
   const [secondModalStatus, setSecondModalStatus] = useState(false)
 
   useEffect(() => {
-    dispatch(getValidators(true))
+    dispatch(getValidators())
   }, [])
 
   const [showSecondModal] = useModal(() => (

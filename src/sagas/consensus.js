@@ -6,7 +6,7 @@ import { transactionFlow } from './transaction'
 import { Consensus as ConsensusABI, BlockReward as BlockRewardABI } from '@/constants/abi'
 import keyBy from 'lodash/keyBy'
 import { balanceOfNative } from '@/actions/accounts'
-import { fetchNodeByAddress, fetchDelegatedNodes } from '@/services/api/boot'
+import { fetchNodeByAddress } from '@/services/api/boot'
 
 function * getTotalStakeAmount () {
   const web3 = yield getWeb3()
@@ -20,17 +20,12 @@ function * getTotalStakeAmount () {
   })
 }
 
-function * getValidators ({ initial }) {
+function * getValidators () {
   const { networkId } = yield select(state => state.network)
   const web3 = yield getWeb3({ networkType: (!networkId || networkId !== 122) ? 'fuse' : null })
   const consensusContract = new web3.eth.Contract(ConsensusABI, CONFIG.consensusAddress)
   const validators = yield call(consensusContract.methods.getValidators().call)
   const entities = keyBy(validators, (address) => address)
-  if (initial) {
-    const delegatedNodes = yield call(fetchDelegatedNodes)
-    const propsToPick = Object.keys(delegatedNodes)
-    yield put(actions.selectValidator(propsToPick[0]))
-  }
   yield put({
     type: actions.GET_VALIDATORS.SUCCESS,
     response: {

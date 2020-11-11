@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useCountUp } from 'react-countup'
 import { formatNumber } from '@/utils/format'
 
-const GrayContainer = ({ title, val, end, modifier, symbol }) => {
+const GrayContainer = ({ title, estimatedAPR, end, modifier, symbol }) => {
   const { accountAddress } = useSelector(state => state.network)
   const { countUp, start, update } = useCountUp({
     formattingFn: formatNumber,
@@ -24,7 +24,7 @@ const GrayContainer = ({ title, val, end, modifier, symbol }) => {
       <div className='grid-x align-justify align-middle'>
         <div className='title'>{title}</div>
         <div className='apy'>
-          + {val}%
+          + {estimatedAPR}%
         </div>
       </div>
       <div className='grid-x align-justify align-middle'>

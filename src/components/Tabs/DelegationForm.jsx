@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { object, number, mixed } from 'yup'
+import { object, number, mixed, string } from 'yup'
 import { Formik, Field, Form } from 'formik'
 import { withdraw, delegate } from '@/actions/consensus'
 import classNames from 'classnames'
@@ -16,17 +16,21 @@ import BigNumber from 'bignumber.js'
 const BLOCKS_IN_YEAR = 6307200
 
 const Scheme = object().noUnknown(false).shape({
-  amount: number().positive(),
+  amount: number().positive().required(),
+  validator: string().required(),
   submitType: mixed().oneOf(['stake', 'unstake']).required().default('stake')
 })
 
-const calcRewardPerYourBlocks = (rewardPerBlock, stakeAmount, numberOfValidators, totalStakeAmount, fee) => {
-  return new BigNumber(rewardPerBlock)
-    .multipliedBy(new BigNumber(stakeAmount))
-    .multipliedBy(numberOfValidators)
-    .div(new BigNumber(totalStakeAmount))
-    .multipliedBy((1 - fee))
-}
+const calcRewardPerYourBlocks = (
+  rewardPerBlock,
+  stakeAmount,
+  numberOfValidators,
+  totalStakeAmount,
+  fee) => new BigNumber(rewardPerBlock)
+  .multipliedBy(new BigNumber(stakeAmount))
+  .multipliedBy(numberOfValidators)
+  .div(new BigNumber(totalStakeAmount))
+  .multipliedBy((1 - fee))
 
 export default ({ submitType, handleConnect }) => {
   const dispatch = useDispatch()
@@ -61,8 +65,8 @@ export default ({ submitType, handleConnect }) => {
     )
 
     const average = rewardPerYourBlocks.div(numberOfValidators)
-    const rewardPerYear = average.multipliedBy(BLOCKS_IN_YEAR) // (525600).multipliedBy(12)
-    const estimatedAPR = rewardPerYear.div(amount) // * 100
+    const rewardPerYear = average.multipliedBy(BLOCKS_IN_YEAR)
+    const estimatedAPR = rewardPerYear.div(amount)
 
     return (
       <Form className='form'>
@@ -89,7 +93,7 @@ export default ({ submitType, handleConnect }) => {
             <GrayContainer
               modifier='gray_container--fix-width'
               symbol='FUSE'
-              val={isNaN(estimatedAPR) ? 0 : (formatWeiToNumber(estimatedAPR) * 100).toFixed(1)}
+              estimatedAPR={isNaN(estimatedAPR) ? 0 : (formatWeiToNumber(estimatedAPR) * 100).toFixed(1)}
               title='Project rewards (1Y)'
               end={isNaN(rewardPerYear) ? 0 : formatWeiToNumber(rewardPerYear)}
             />
@@ -131,12 +135,14 @@ export default ({ submitType, handleConnect }) => {
     <Formik
       initialValues={{
         amount: '',
+        validator,
         submitType
       }}
       validationSchema={Scheme}
       render={renderForm}
       onSubmit={onSubmit}
       validateOnChange
+      enableReinitialize
     />
   )
 }
