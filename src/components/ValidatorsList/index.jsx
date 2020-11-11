@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga'
 import React, { useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Formik, Form, useFormikContext } from 'formik'
@@ -83,7 +84,12 @@ const ValidatorsList = () => {
     {
       accessor: 'website',
       Header: <TableHeader header='website' id='website' />,
-      Cell: ({ row: { values: { website } } }) => !website || website.includes('soon') ? <div className='link'>{website}</div> : <a target='_blank' rel='noopener noreferrer' onClick={(e) => e.stopPropagation()} href={website} className='link link--hover'>{website}</a>
+      Cell: ({ row: { values: { website } } }) => !website || website.includes('soon') ? <div className='link'>{website}</div> : <a target='_blank' rel='noopener noreferrer' onClick={(e) => {
+        e.stopPropagation()
+        ReactGA.outboundLink({ label: website }, () => {
+          console.debug('Fired outbound link event', website)
+        })
+      }} href={website} className='link link--hover'>{website}</a>
     },
     {
       id: 'dropdown',

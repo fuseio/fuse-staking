@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { object, number, mixed, string } from 'yup'
@@ -50,6 +51,11 @@ export default ({ submitType, handleConnect }) => {
     } else if (submitType === 'unstake') {
       dispatch(withdraw(validator, toWei(amount)))
     }
+    ReactGA.event({
+      category: 'action',
+      action: `Action - ${submitType}`,
+      label: `${submitType} ${amount} into pool: ${get(validators, [validator, 'name'])} ${validator} `
+    })
   }
 
   const renderForm = ({ dirty, isValid, values }) => {

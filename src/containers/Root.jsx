@@ -1,7 +1,9 @@
+import ReactGA from 'react-ga'
 import React, { useEffect, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { Switch, Route } from 'react-router'
 import Header from '@/components/common/Header.jsx'
+import GoogleAnalyticsReporter from '@/components/analytics'
 import Footer from '@/components/common/Footer.jsx'
 import HomePage from '@/pages/Home'
 import { getWeb3 } from '@/services/web3'
@@ -19,7 +21,14 @@ export default () => {
 
   // const handleLogout = useCallback(web3connect?.core?.clearCachedProvider, [web3connect])
 
-  const handleConnect = useCallback(web3connect?.toggleModal, [web3connect])
+  const handleConnect = useCallback(() => {
+    web3connect.toggleModal()
+    ReactGA.event({
+      category: 'action',
+      action: 'Connect wallet',
+      label: 'Connect wallet'
+    })
+  }, [web3connect])
 
   useEffect(() => {
     if (web3connect.core.cachedProvider) {
@@ -30,6 +39,7 @@ export default () => {
   return (
     <>
       <Header handleConnect={handleConnect} />
+      <Route component={GoogleAnalyticsReporter} />
       <Switch>
         <Route path='/'>
           <HomePage handleConnect={handleConnect} />
