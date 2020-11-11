@@ -15,8 +15,8 @@ import BigNumber from 'bignumber.js'
 
 const BLOCKS_IN_YEAR = 6307200
 
-const Scheme = object().noUnknown(false).shape({
-  amount: number().positive().required(),
+const Scheme = (max) => object().noUnknown(false).shape({
+  amount: number().positive().max(max).required(),
   validator: string().required(),
   submitType: mixed().oneOf(['stake', 'unstake']).required().default('stake')
 })
@@ -131,6 +131,8 @@ export default ({ submitType, handleConnect }) => {
     )
   }
 
+  const max = submitType === 'stake' ? balanceOfNative : yourStake
+
   return (
     <Formik
       initialValues={{
@@ -138,7 +140,7 @@ export default ({ submitType, handleConnect }) => {
         validator,
         submitType
       }}
-      validationSchema={Scheme}
+      validationSchema={Scheme(formatWeiToNumber(max))}
       render={renderForm}
       onSubmit={onSubmit}
       validateOnChange
