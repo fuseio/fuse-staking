@@ -56,7 +56,7 @@ const ValidatorsList = () => {
       stakeAmount,
       yourStake,
       website,
-      isOpen: forDelegation
+      isOpen: forDelegation && (formatWeiToNumber(fee) * 100) >= 15
     })), [({ isOpen }) => !isOpen])
   }, [entities, showOnlyDelegators, showOnlyStaked])
 
