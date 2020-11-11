@@ -12,7 +12,7 @@
     color: $color-black;
   }
 
-  @include block(boxs) {
+  @include block(boxes) {
     margin-bottom: 1em;
     @include xy-grid(horizontal);
     @include flex-align(justify, null);

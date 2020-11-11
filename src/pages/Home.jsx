@@ -158,7 +158,7 @@ export default ({ handleConnect }) => {
   return (
     <div className='main'>
       <div className='main__content'>
-        <div className='boxs'>
+        <div className='boxes'>
           <InfoBox
             name='apy'
             modalText='APY - Annual Percentage Yield (APY) is the estimated yearly yield for tokens locked. Our calculation is " $ locked * (1 year in second)/(total stake in $ * time remaining in seconds).'
