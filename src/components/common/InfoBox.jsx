@@ -4,11 +4,12 @@ import classNames from 'classnames'
 import { useCountUp } from 'react-countup'
 import { formatNumber } from '@/utils/format'
 
-export default ({ Icon, name, title, end, withSymbol = true, symbol }) => {
+export default ({ Icon, name, title, end, withSymbol = true, symbol, decimals }) => {
   const { accountAddress } = useSelector(state => state.network)
   const { countUp, start, update } = useCountUp({
     formattingFn: formatNumber,
-    end
+    end,
+    decimals
   })
 
   useEffect(() => {

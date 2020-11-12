@@ -174,6 +174,7 @@ export default ({ handleConnect }) => {
             symbol='FUSE'
             title='Balance'
             end={formatWeiToNumber(balance)}
+            decimals={2}
             Icon={() => (
               <img src={briefcaseIcon} />
             )}
