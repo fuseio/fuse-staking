@@ -4,6 +4,7 @@ import { getWeb3 as getWeb3Service } from '@/services/web3'
 import * as actions from '@/actions/network'
 import { getProviderInfo } from 'web3modal'
 import { eventChannel } from 'redux-saga'
+import { getValidators } from '@/actions/consensus'
 
 function * getNetworkTypeInternal (web3) {
   const networkId = yield web3.eth.net.getId()
@@ -91,6 +92,7 @@ function * checkNetworkType ({ web3, accountAddress }) {
       type: actions.CHECK_NETWORK_TYPE.SUCCESS,
       response
     })
+    yield put(getValidators())
   } catch (error) {
     yield put({ type: actions.CHECK_NETWORK_TYPE.FAILURE, error })
     yield put({
