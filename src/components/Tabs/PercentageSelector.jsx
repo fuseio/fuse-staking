@@ -12,7 +12,7 @@ const PercentOption = ({ value, balance }) => {
   const { accountAddress } = useSelector(state => state.network)
   const { validator } = useSelector(state => state.screens.stake)
   const { values: { submitType } } = useFormikContext()
-  const percent = submitType === 'stake' && value === 100 ? 99.9 : value
+  const percent = submitType === 'stake' && value === 100 ? 99.5 : value
   return (
     <label className={classNames('percent_option', { 'percent_option--disabled': !accountAddress || !validator })}>
       <Field>
