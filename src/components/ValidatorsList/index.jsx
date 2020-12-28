@@ -1,5 +1,6 @@
 import ReactGA from 'react-ga'
 import React, { useMemo } from 'react'
+import { isMobile } from 'react-device-detect'
 import { useSelector, useDispatch } from 'react-redux'
 import { Formik, Form, useFormikContext } from 'formik'
 import { object, string, boolean } from 'yup'
@@ -61,42 +62,79 @@ const ValidatorsList = () => {
     })), [({ isOpen }) => !isOpen])
   }, [entities, showOnlyDelegators, showOnlyStaked])
 
-  const columns = useMemo(() => [
-    {
-      accessor: 'name',
-      Header: <TableHeader header='name' tooltipText='The name of the validator.' id='name' />
-    },
-    {
-      accessor: 'stakeAmount',
-      Cell: ({ row: { original: { yourStake, stakeAmount } } }) => (
-        <div className='staked'>{yourStake && yourStake !== '0' ? `${formatWei(yourStake)} / ` : ''} {formatWei(stakeAmount)}</div>
-      ),
-      Header: <TableHeader header='Staked amount' tooltipText='The amount of FUSE staked to each validator.' id='staked' />
-    },
-    {
-      accessor: 'fee',
-      Header: <TableHeader header='Fee' tooltipText='The % of the block rewards each validator takes.' id='fee' />
-    },
-    {
-      accessor: 'upTime',
-      Header: <TableHeader header='Up time' tooltipText='The % of blocks filled since each validator has been live.' id='upTime' />
-    },
-    {
-      accessor: 'website',
-      Header: <TableHeader header='website' id='website' />,
-      Cell: ({ row: { values: { website } } }) => !website || website.includes('soon') ? <div className='link'>{website}</div> : <a target='_blank' rel='noopener noreferrer' onClick={(e) => {
-        e.stopPropagation()
-        ReactGA.outboundLink({ label: website }, () => {
-          console.debug('Fired outbound link event', website)
-        })
-      }} href={website} className='link link--hover'>{website}</a>
-    },
-    {
-      id: 'dropdown',
-      accessor: '',
-      Cell: (rowInfo) => <button className='button'><span>Stake</span></button>
-    }
-  ], [])
+  const columns = useMemo(
+    () => isMobile
+      ? [
+        {
+          accessor: 'name',
+          Header: <TableHeader header='name' tooltipText='The name of the validator.' id='name' />
+        },
+        {
+          accessor: 'stakeAmount',
+          Cell: ({ row: { original: { yourStake, stakeAmount } } }) => (
+            <div className='staked'>{yourStake && yourStake !== '0' ? `${formatWei(yourStake)} / ` : ''} {formatWei(stakeAmount)}</div>
+          ),
+          Header: <TableHeader header='Staked amount' tooltipText='The amount of FUSE staked to each validator.' id='staked' />
+        },
+        {
+          accessor: 'fee',
+          Header: <TableHeader header='Fee' tooltipText='The % of the block rewards each validator takes.' id='fee' />
+        },
+        // {
+        //   accessor: 'upTime',
+        //   Header: <TableHeader header='Up time' tooltipText='The % of blocks filled since each validator has been live.' id='upTime' />
+        // },
+        // {
+        //   accessor: 'website',
+        //   Header: <TableHeader header='website' id='website' />,
+        //   Cell: ({ row: { values: { website } } }) => !website || website.includes('soon') ? <div className='link'>{website}</div> : <a target='_blank' rel='noopener noreferrer' onClick={(e) => {
+        //     e.stopPropagation()
+        //     ReactGA.outboundLink({ label: website }, () => {
+        //       console.debug('Fired outbound link event', website)
+        //     })
+        //   }} href={website} className='link link--hover'>{website}</a>
+        // },
+        {
+          id: 'dropdown',
+          accessor: '',
+          Cell: (rowInfo) => <button className='button'><span>Stake</span></button>
+        }
+      ] : [
+        {
+          accessor: 'name',
+          Header: <TableHeader header='name' tooltipText='The name of the validator.' id='name' />
+        },
+        {
+          accessor: 'stakeAmount',
+          Cell: ({ row: { original: { yourStake, stakeAmount } } }) => (
+            <div className='staked'>{yourStake && yourStake !== '0' ? `${formatWei(yourStake)} / ` : ''} {formatWei(stakeAmount)}</div>
+          ),
+          Header: <TableHeader header='Staked amount' tooltipText='The amount of FUSE staked to each validator.' id='staked' />
+        },
+        {
+          accessor: 'fee',
+          Header: <TableHeader header='Fee' tooltipText='The % of the block rewards each validator takes.' id='fee' />
+        },
+        {
+          accessor: 'upTime',
+          Header: <TableHeader header='Up time' tooltipText='The % of blocks filled since each validator has been live.' id='upTime' />
+        },
+        {
+          accessor: 'website',
+          Header: <TableHeader header='website' id='website' />,
+          Cell: ({ row: { values: { website } } }) => !website || website.includes('soon') ? <div className='link'>{website}</div> : <a target='_blank' rel='noopener noreferrer' onClick={(e) => {
+            e.stopPropagation()
+            ReactGA.outboundLink({ label: website }, () => {
+              console.debug('Fired outbound link event', website)
+            })
+          }} href={website} className='link link--hover'>{website}</a>
+        },
+        {
+          id: 'dropdown',
+          accessor: '',
+          Cell: (rowInfo) => <button className='button'><span>Stake</span></button>
+        }
+      ], [isMobile])
 
   return (
     <div className='validator__list grid-y'>
@@ -137,14 +175,6 @@ const SelectValidatorForm = () => {
     }
   }, [])
 
-  const renderForm = () => {
-    return (
-      <Form>
-        <ValidatorsList />
-      </Form>
-    )
-  }
-
   return (
     <Formik
       initialValues={{
@@ -153,8 +183,13 @@ const SelectValidatorForm = () => {
       }}
       onSubmit={onSubmit}
       validationSchema={Shape}
-      render={renderForm}
-    />
+    >
+      {(props) => (
+        <Form>
+          <ValidatorsList />
+        </Form>
+      )}
+    </Formik>
   )
 }
 

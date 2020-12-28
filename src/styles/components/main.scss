@@ -4,6 +4,12 @@
   @include xy-grid-container(1440px, 0);
   @include xy-grid(horizontal, false);
 
+  @include breakpoint(medium down) {
+    width: 100%;
+    @include xy-grid(vertical, false);
+    @include flex-align(center, middle);
+  }
+
   @include block(title) {
     font-style: normal;
     font-weight: 500;
@@ -41,6 +47,13 @@
 
     @include breakpoint(1400px down) {
       width: 800px;
+    }
+
+    @include breakpoint(medium down) {
+      width: 100%;
+      padding: 0;
+      margin-bottom: 3em;
+      padding: 0 1em;
     }
   }
 }
