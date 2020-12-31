@@ -47,7 +47,7 @@ export default ({
         const { column: { id }, value } = cell
         const className = id === 'checkbox' || id === 'dropdown'
           ? 'table__body__cell cell small-2 grid-x align-center'
-          : `table__body__cell cell grid-x align-middle small-${Math.ceil(24 / row.cells.length)}`
+          : `table__body__cell cell align-middle small-${Math.ceil(24 / row.cells.length)}`
         if (id === 'name' && isArray(value)) {
           return (
             <td key={index} {...cell.getCellProps({ className })}>

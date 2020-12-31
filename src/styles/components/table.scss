@@ -193,6 +193,10 @@
         align-items: center;
         color: #327384;
         text-decoration: underline;
+
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
 
       @include block(avatar) {
@@ -229,6 +233,7 @@
     }
 
     @include element(cell) {
+      @include xy-grid(horizontal, false);
       font-size: 0.688em;
       color: $color-gray;
 
