@@ -117,15 +117,17 @@ const ValidatorsList = () => {
             Cell: ({ row: { original: { oldNode } } }) => <button className='button'><span>{oldNode ? 'Unstake' : 'Stake'}</span></button>
           }], [isMobile])
 
+  const handleSelectValidator = ({ original: { address, isOpen, oldNode } }) => {
+    if (isOpen || oldNode) {
+      setFieldValue('validator', address)
+      setTimeout(submitForm, 3)
+    }
+  }
+
   const renderTable = () => {
     return (
       <Table
-        handleClick={({ original: { address, isOpen, oldNode } }) => {
-          if (isOpen || oldNode) {
-            setFieldValue('validator', address)
-            setTimeout(submitForm, 3)
-          }
-        }}
+        handleClick={handleSelectValidator}
         columns={columns}
         data={data}
         count={Object.keys(entities).length}
