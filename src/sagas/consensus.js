@@ -5,6 +5,7 @@ import { getWeb3 } from '@/services/web3'
 import { transactionFlow } from './transaction'
 import { Consensus as ConsensusABI, BlockReward as BlockRewardABI } from '@/constants/abi'
 import keyBy from 'lodash/keyBy'
+import omit from 'lodash/omit'
 import { balanceOfNative } from '@/actions/accounts'
 import { fetchNodeByAddress, fetchOldNodes } from '@/services/api/boot'
 
@@ -45,7 +46,7 @@ function * getOldNodes () {
       entity: 'validators',
       response: {
         address,
-        ...oldNodes[address],
+        ...omit(oldNodes[address], ['forDelegation']),
         oldNode: true
       }
     })
