@@ -1,10 +1,12 @@
 import React from 'react'
 import { useTable, usePagination, useSortBy } from 'react-table'
+import { useFormikContext } from 'formik'
 import ArrowLeft from '@/assets/images/arrow_left.svg'
 import ArrowRight from '@/assets/images/arrow_right.svg'
 import BodyRow from './BodyRow'
 import HeaderRow from './HeaderRow'
 import ShowOnlyDelegators from './ShowOnlyDelegators'
+import ShowOnlyOldNodes from './ShowOnlyOldNodes'
 // import ShowOnlyStaked from './ShowOnlyStaked'
 
 const MyTable = ({
@@ -14,6 +16,7 @@ const MyTable = ({
   size,
   handleClick
 }) => {
+  const formik = useFormikContext()
   const {
     getTableProps,
     getTableBodyProps,
@@ -51,8 +54,8 @@ const MyTable = ({
     <div className='table__wrapper'>
       <div className='table__actions grid-x align-justify align-middle'>
         <div className='table__title'>Validators</div>
-        {/* <ShowOnlyStaked /> */}
-        <ShowOnlyDelegators />
+        {!formik.values.showOnlyOldNodes && <ShowOnlyDelegators />}
+        <ShowOnlyOldNodes />
       </div>
       <table {...getTableProps({ className: 'table' })}>
         <thead>

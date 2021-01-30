@@ -1,4 +1,3 @@
-import ReactGA from 'react-ga'
 import React, { useMemo } from 'react'
 import { isMobile } from 'react-device-detect'
 import { useSelector, useDispatch } from 'react-redux'
@@ -13,10 +12,13 @@ import TableLoader from '@/components/common/Table/TableLoader'
 import { selectValidator } from '@/actions/consensus'
 import { formatWei, formatWeiToNumber, addressShortener } from '@/utils/format'
 import { addDefaultSrc } from '@/utils/images'
+import WebsiteCell from './cells/website'
+import StakeAmountCell from './cells/stakeAmount'
 
 const Shape = object().shape({
   validator: string(),
   showOnlyDelegators: boolean(),
+  showOnlyOldNodes: boolean(),
   showOnlyStaked: boolean()
 })
 
@@ -24,16 +26,18 @@ const ValidatorsList = () => {
   const { isLoading } = useSelector(state => state.consensus)
   const entities = useSelector(state => state.entities.validators)
   const { setFieldValue, submitForm, values } = useFormikContext()
-  const { showOnlyDelegators, showOnlyStaked } = values
-
+  const { showOnlyOldNodes, showOnlyDelegators, showOnlyStaked } = values
   const data = useMemo(() => {
-    const rawData = showOnlyDelegators && showOnlyStaked
-      ? filter(entities, ({ yourStake, forDelegation }) => !!Number(yourStake) && forDelegation)
-      : showOnlyDelegators
-        ? filter(entities, ['forDelegation', 1])
-        : showOnlyStaked
-          ? filter(entities, ({ yourStake }) => !!Number(yourStake))
-          : entities
+    const rawData = showOnlyOldNodes
+      ? filter(entities, ['oldNode', true])
+      : showOnlyDelegators && showOnlyStaked
+        ? filter(entities, ({ yourStake, forDelegation }) => !!Number(yourStake) && forDelegation)
+        : showOnlyDelegators
+          ? filter(entities, ['forDelegation', 1])
+          : showOnlyStaked
+            ? filter(entities, ({ yourStake }) => !!Number(yourStake))
+            : filter(entities, ['oldNode', false])
+
     return sortBy(map(rawData, ({
       yourStake,
       name,
@@ -43,7 +47,8 @@ const ValidatorsList = () => {
       stakeAmount,
       upTime,
       forDelegation,
-      website
+      website,
+      oldNode
     }) => ({
       name: [
         {
@@ -58,57 +63,20 @@ const ValidatorsList = () => {
       stakeAmount,
       yourStake,
       website,
-      isOpen: forDelegation && (formatWeiToNumber(fee) * 100) >= 15
+      isOpen: forDelegation && (formatWeiToNumber(fee) * 100) >= 15,
+      oldNode
     })), [({ isOpen }) => !isOpen])
-  }, [entities, showOnlyDelegators, showOnlyStaked])
+  }, [entities, showOnlyDelegators, showOnlyStaked, showOnlyOldNodes])
 
   const columns = useMemo(
     () => isMobile
-      ? [
-        {
+      ? [{
           accessor: 'name',
           Header: <TableHeader header='name' tooltipText='The name of the validator.' id='name' />
         },
         {
           accessor: 'stakeAmount',
-          Cell: ({ row: { original: { yourStake, stakeAmount } } }) => (
-            <div className='staked'>{yourStake && yourStake !== '0' ? `${formatWei(yourStake)} / ` : ''} {formatWei(stakeAmount)}</div>
-          ),
-          Header: <TableHeader header='Staked amount' tooltipText='The amount of FUSE staked to each validator.' id='staked' />
-        },
-        {
-          accessor: 'fee',
-          Header: <TableHeader header='Fee' tooltipText='The % of the block rewards each validator takes.' id='fee' />
-        },
-        // {
-        //   accessor: 'upTime',
-        //   Header: <TableHeader header='Up time' tooltipText='The % of blocks filled since each validator has been live.' id='upTime' />
-        // },
-        // {
-        //   accessor: 'website',
-        //   Header: <TableHeader header='website' id='website' />,
-        //   Cell: ({ row: { values: { website } } }) => !website || website.includes('soon') ? <div className='link'>{website}</div> : <a target='_blank' rel='noopener noreferrer' onClick={(e) => {
-        //     e.stopPropagation()
-        //     ReactGA.outboundLink({ label: website }, () => {
-        //       console.debug('Fired outbound link event', website)
-        //     })
-        //   }} href={website} className='link link--hover'>{website}</a>
-        // },
-        {
-          id: 'dropdown',
-          accessor: '',
-          Cell: (rowInfo) => <button className='button'><span>Stake</span></button>
-        }
-      ] : [
-        {
-          accessor: 'name',
-          Header: <TableHeader header='name' tooltipText='The name of the validator.' id='name' />
-        },
-        {
-          accessor: 'stakeAmount',
-          Cell: ({ row: { original: { yourStake, stakeAmount } } }) => (
-            <div className='staked'>{yourStake && yourStake !== '0' ? `${formatWei(yourStake)} / ` : ''} {formatWei(stakeAmount)}</div>
-          ),
+          Cell: StakeAmountCell,
           Header: <TableHeader header='Staked amount' tooltipText='The amount of FUSE staked to each validator.' id='staked' />
         },
         {
@@ -116,46 +84,61 @@ const ValidatorsList = () => {
           Header: <TableHeader header='Fee' tooltipText='The % of the block rewards each validator takes.' id='fee' />
         },
         {
-          accessor: 'upTime',
-          Header: <TableHeader header='Up time' tooltipText='The % of blocks filled since each validator has been live.' id='upTime' />
-        },
-        {
-          accessor: 'website',
-          Header: <TableHeader header='website' id='website' />,
-          Cell: ({ row: { values: { website } } }) => !website || website.includes('soon') ? <div className='link'>{website}</div> : <a target='_blank' rel='noopener noreferrer' onClick={(e) => {
-            e.stopPropagation()
-            ReactGA.outboundLink({ label: website }, () => {
-              console.debug('Fired outbound link event', website)
-            })
-          }} href={website} className='link link--hover'>{website}</a>
-        },
-        {
           id: 'dropdown',
           accessor: '',
-          Cell: (rowInfo) => <button className='button'><span>Stake</span></button>
-        }
-      ], [isMobile])
+          Cell: ({ row: { original: { oldNode } } }) => <button className='button'><span>{oldNode ? 'Unstake' : 'Stake'}</span></button>
+        }]
+      : [
+          {
+            accessor: 'name',
+            Header: <TableHeader header='name' tooltipText='The name of the validator.' id='name' />
+          },
+          {
+            accessor: 'stakeAmount',
+            Cell: StakeAmountCell,
+            Header: <TableHeader header='Staked amount' tooltipText='The amount of FUSE staked to each validator.' id='staked' />
+          },
+          {
+            accessor: 'fee',
+            Header: <TableHeader header='Fee' tooltipText='The % of the block rewards each validator takes.' id='fee' />
+          },
+          {
+            accessor: 'upTime',
+            Header: <TableHeader header='Up time' tooltipText='The % of blocks filled since each validator has been live.' id='upTime' />
+          },
+          {
+            accessor: 'website',
+            Header: <TableHeader header='website' id='website' />,
+            Cell: WebsiteCell
+          },
+          {
+            id: 'dropdown',
+            accessor: '',
+            Cell: ({ row: { original: { oldNode } } }) => <button className='button'><span>{oldNode ? 'Unstake' : 'Stake'}</span></button>
+          }], [isMobile])
+
+  const handleSelectValidator = ({ original: { address, isOpen, oldNode } }) => {
+    if (isOpen || oldNode) {
+      setFieldValue('validator', address)
+      setTimeout(submitForm, 3)
+    }
+  }
+
+  const renderTable = () => {
+    return (
+      <Table
+        handleClick={handleSelectValidator}
+        columns={columns}
+        data={data}
+        count={Object.keys(entities).length}
+        size={10}
+      />
+    )
+  }
 
   return (
     <div className='validator__list grid-y'>
-      {
-        isLoading
-          ? <TableLoader />
-          : (
-            <Table
-              handleClick={({ original: { address, isOpen } }) => {
-                if (isOpen) {
-                  setFieldValue('validator', address)
-                  setTimeout(submitForm, 3)
-                }
-              }}
-              columns={columns}
-              data={data}
-              count={Object.keys(entities).length}
-              size={10}
-            />
-          )
-      }
+      {isLoading ? <TableLoader /> : renderTable()}
     </div>
   )
 }

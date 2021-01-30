@@ -107,7 +107,7 @@ export default ({ handleConnect }) => {
             className='button'
           >
             <img style={{ width: '16px', marginRight: '.5em' }} className='icon' src={walletIcon} />
-          Connect wallet
+            Connect wallet
           </button>
         )
       }

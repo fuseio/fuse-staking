@@ -17,7 +17,15 @@ import useInterval from '@/hooks/useInterval'
 import { formatWeiToNumber, toWei } from '@/utils/format'
 import BigNumber from 'bignumber.js'
 import { balanceOfNative } from '@/actions/accounts'
-import { withdraw, delegate, getValidators, getTotalStakeAmount, getBlockRewardAmount, getBlockNumber } from '@/actions/consensus'
+import {
+  withdraw,
+  delegate,
+  getValidators,
+  getOldValidators,
+  getTotalStakeAmount,
+  getBlockRewardAmount,
+  getBlockNumber
+} from '@/actions/consensus'
 
 export default ({ handleConnect }) => {
   const dispatch = useDispatch()
@@ -36,6 +44,7 @@ export default ({ handleConnect }) => {
 
   useEffect(() => {
     dispatch(getValidators())
+    dispatch(getOldValidators())
   }, [])
 
   const [showSecondModal] = useModal(() => (
@@ -102,7 +111,7 @@ export default ({ handleConnect }) => {
           >
             {' here '}
           </strong>
-            to learn how to add Fuse network to Metamask
+          to learn how to add Fuse network to Metamask
         </div>
         <button
           className='close'

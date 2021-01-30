@@ -5,8 +5,9 @@ import { getWeb3 } from '@/services/web3'
 import { transactionFlow } from './transaction'
 import { Consensus as ConsensusABI, BlockReward as BlockRewardABI } from '@/constants/abi'
 import keyBy from 'lodash/keyBy'
+import omit from 'lodash/omit'
 import { balanceOfNative } from '@/actions/accounts'
-import { fetchNodeByAddress } from '@/services/api/boot'
+import { fetchNodeByAddress, fetchOldNodes } from '@/services/api/boot'
 
 function * getTotalStakeAmount () {
   const web3 = yield getWeb3()
@@ -31,6 +32,30 @@ function * getValidators () {
     response: {
       entities,
       numberOfValidators: validators.length
+    }
+  })
+}
+
+function * getOldNodes () {
+  const { numberOfValidators = 0 } = yield select(state => state.consensus)
+  const oldNodes = yield call(fetchOldNodes)
+  const validators = Object.keys(oldNodes)
+  for (const address in oldNodes) {
+    yield put({
+      type: actions.FETCH_VALIDATOR_METADATA.SUCCESS,
+      entity: 'validators',
+      response: {
+        address,
+        ...omit(oldNodes[address], ['forDelegation']),
+        oldNode: true
+      }
+    })
+  }
+  yield put({
+    type: actions.GET_VALIDATORS.SUCCESS,
+    response: {
+      entities: validators,
+      numberOfValidators: numberOfValidators + validators.length
     }
   })
 }
@@ -64,7 +89,8 @@ function * fetchValidatorMetadata ({ address }) {
       address,
       ...{
         ...response.Node,
-        ...validatorData
+        ...validatorData,
+        oldNode: false
       }
     }
   })
@@ -157,13 +183,14 @@ function * watchStakingSuccess () {
   }
 }
 
-export default function * accountsSaga () {
+export default function * consensusSaga () {
   yield all([
     tryTakeEvery(actions.WITHDRAW, withdraw, 1),
     tryTakeEvery(actions.DELEGATE, delegate, 1),
     tryTakeEvery(actions.GET_BLOCK_REWARD_AMOUNT, getBlockRewardAmount, 1),
     tryTakeEvery(actions.GET_BLOCK_REWARD_AMOUNT_PER_VALIDATOR, getBlockRewardAmountPerValidator, 1),
     tryTakeEvery(actions.GET_VALIDATORS, getValidators, 1),
+    tryTakeEvery(actions.GET_OLD_VALIDATORS, getOldNodes, 1),
     tryTakeEvery(actions.FETCH_VALIDATOR_METADATA, fetchValidatorMetadata, 1),
     tryTakeEvery(actions.GET_TOTAL_STAKE_AMOUNT, getTotalStakeAmount, 1),
     takeEvery([actions.GET_VALIDATORS.SUCCESS], watchGetValidators),

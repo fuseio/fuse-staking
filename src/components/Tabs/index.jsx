@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import get from 'lodash/get'
 import { object, number, mixed, string } from 'yup'
 import classNames from 'classnames'
 import { withFormik, Form } from 'formik'
@@ -33,10 +34,29 @@ const FormWrapper = ({ handleConnect, setFieldValue }) => {
   const { accountAddress } = useSelector(state => state.network)
   const [tabIndex, setTabIndex] = useState(0)
   const { validator } = useSelector(state => state.screens.stake)
+  const validators = useSelector(state => state.entities.validators)
+  const oldNode = get(validators, [validator, 'oldNode'], false)
 
   useEffect(() => {
     setFieldValue('validator', validator)
   }, [validator])
+
+  useEffect(() => {
+    if (oldNode) {
+      handleTabSelection(1)
+    } else {
+      handleTabSelection(0)
+    }
+  }, [oldNode])
+
+  const handleTabSelection = (index) => {
+    if (oldNode && index === 0) {
+      return
+    }
+    setTabIndex(index)
+    setFieldValue('submitType', index === 0 ? 'stake' : 'unstake')
+    setFieldValue('amount', '')
+  }
 
   return (
     <Form className='tabs__wrapper'>
@@ -45,14 +65,10 @@ const FormWrapper = ({ handleConnect, setFieldValue }) => {
         selectedIndex={tabIndex}
         className='tabs'
         selectedTabClassName={accountAddress && validator ? 'tabs__tab--selected' : 'tabs__tab--disabled'}
-        onSelect={(index) => {
-          setTabIndex(index)
-          setFieldValue('submitType', index === 0 ? 'stake' : 'unstake')
-          setFieldValue('amount', '')
-        }}
+        onSelect={handleTabSelection}
       >
         <TabList className='tabs__list'>
-          <CustomTab className={classNames('tabs__tab', { 'tabs__tab--not-selected': !validator && tabIndex === 0 })}>Stake</CustomTab>
+          <CustomTab className={classNames('tabs__tab', { 'tabs__tab--not-selected': (!validator && tabIndex === 0) || oldNode })}>Stake</CustomTab>
           <CustomTab className={classNames('tabs__tab', { 'tabs__tab--not-selected': !validator && tabIndex === 1 })}>Unstake</CustomTab>
         </TabList>
         <CustomTabPanel className='tabs__panel'>
