@@ -4,6 +4,7 @@ const validatorsAction = createEntityAction('validators')
 
 export const GET_TOTAL_STAKE_AMOUNT = createRequestTypes('GET_TOTAL_STAKE_AMOUNT')
 export const GET_VALIDATORS = createRequestTypes('GET_VALIDATORS')
+export const GET_OLD_VALIDATORS = createRequestTypes('GET_OLD_VALIDATORS')
 export const FETCH_VALIDATOR_METADATA = createRequestTypes('FETCH_VALIDATOR_METADATA')
 export const GET_BLOCK_REWARD_AMOUNT = createRequestTypes('GET_BLOCK_REWARD_AMOUNT')
 export const GET_BLOCK_REWARD_AMOUNT_PER_VALIDATOR = createRequestTypes('GET_BLOCK_REWARD_AMOUNT_PER_VALIDATOR')
@@ -16,6 +17,7 @@ export const fetchValidatorMetadata = (address) => validatorsAction(FETCH_VALIDA
 export const getBlockRewardAmountPerValidator = (address) => validatorsAction(GET_BLOCK_REWARD_AMOUNT_PER_VALIDATOR.REQUEST, { address })
 export const getTotalStakeAmount = () => requestAction(GET_TOTAL_STAKE_AMOUNT)
 export const getValidators = () => requestAction(GET_VALIDATORS)
+export const getOldValidators = () => requestAction(GET_OLD_VALIDATORS)
 export const getBlockRewardAmount = () => requestAction(GET_BLOCK_REWARD_AMOUNT)
 export const getBlockNumber = () => requestAction(GET_BLOCK_NUMBER)
 

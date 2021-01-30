@@ -30,14 +30,16 @@ module.exports = {
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
-          !isDev ? {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              publicPath: './'
-            }
-          } : {
-            loader: 'style-loader'
-          },
+          !isDev
+            ? {
+                loader: MiniCssExtractPlugin.loader,
+                options: {
+                  publicPath: './'
+                }
+              }
+            : {
+                loader: 'style-loader'
+              },
           {
             loader: 'css-loader',
             options: {
@@ -76,7 +78,7 @@ module.exports = {
               publicPath: './images'
             }
           },
-          isDev ? {
+          {
             loader: 'image-webpack-loader',
             options: {
               bypassOnDebug: true,
@@ -93,8 +95,8 @@ module.exports = {
                 progressive: true
               }
             }
-          } : null
-        ].filter(Boolean)
+          }
+        ]
       },
       {
         test: /\.svg$/,

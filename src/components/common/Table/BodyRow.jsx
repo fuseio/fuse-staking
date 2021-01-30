@@ -18,7 +18,7 @@ export default ({
     )
   }
   const { validator } = useSelector(state => state.screens.stake)
-  const { original: { address, isOpen } } = row
+  const { original: { address, isOpen, oldNode } } = row
 
   const [props, set] = useSpring(() => ({
     transform: 'scale(1)',
@@ -33,9 +33,9 @@ export default ({
       {...row.getRowProps({
         style,
         className: classNames('table__body__row grid-x align-middle align-spaced', {
-          'table__body__row--open': isOpen,
+          'table__body__row--open': isOpen || oldNode,
           'table__body__row--selected': address === validator,
-          'table__body__row--close': !isOpen
+          'table__body__row--close': !isOpen && !oldNode
         })
       })}
       onClick={(e) => handleClick(row)}
