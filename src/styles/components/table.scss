@@ -95,7 +95,31 @@
   }
 
   @include element(actions) {
-    padding: 2em;
+    padding: 2em 0 1em 2em;
+  }
+
+  @include element(radios) {
+    margin: 1em 0;
+
+    @include breakpoint(medium down) {
+      @include xy-grid(vertical);
+      @include flex-align(null, null);
+      > div {
+        &:first-child {
+          margin-bottom: 1em;
+        }
+      }
+    }
+
+    @include breakpoint(medium up) {
+      @include xy-grid();
+      @include flex-align(null, middle);
+      > div {
+        &:first-child {
+          margin-right: 1em;
+        }
+      }
+    }
   }
 
   @include element(title) {

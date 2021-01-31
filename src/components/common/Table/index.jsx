@@ -52,10 +52,12 @@ const MyTable = ({
 
   return (
     <div className='table__wrapper'>
-      <div className='table__actions grid-x align-justify align-middle'>
+      <div className='table__actions grid-y'>
         <div className='table__title'>Validators</div>
-        {!formik.values.showOnlyOldNodes && <ShowOnlyDelegators />}
-        <ShowOnlyOldNodes />
+        <div className='table__radios'>
+          {!formik.values.showOnlyOldNodes && <ShowOnlyDelegators />}
+          <ShowOnlyOldNodes />
+        </div>
       </div>
       <table {...getTableProps({ className: 'table' })}>
         <thead>
