@@ -4,11 +4,12 @@ import classNames from 'classnames'
 import { useCountUp } from 'react-countup'
 import { formatNumber } from '@/utils/format'
 
-export default ({ Icon, name, title, end, secondEnd, withSymbol = true, symbol, secondTitle }) => {
+export default ({ Icon, name, title, end, secondEnd, withSymbol = true, symbol, secondTitle, decimals }) => {
   const { accountAddress } = useSelector(state => state.network)
   const { countUp, start, update } = useCountUp({
     formattingFn: formatNumber,
-    end
+    end,
+    decimals
   })
 
   const secondCounter = useCountUp({
@@ -43,7 +44,7 @@ export default ({ Icon, name, title, end, secondEnd, withSymbol = true, symbol, 
                   {countUp}&nbsp;
                   {symbol}
                 </div>
-              )
+                )
               : <div className={classNames('info_box__value', { 'info_box__value--disabled': !accountAddress })}>{countUp}</div>
           }
           <div className={classNames('info_box__title', { 'info_box__title--disabled': !accountAddress })}>{title}</div>
@@ -57,7 +58,7 @@ export default ({ Icon, name, title, end, secondEnd, withSymbol = true, symbol, 
                   {secondCounter.countUp}&nbsp;
                   {symbol}
                 </div>
-              )
+                )
               : <div className={classNames('info_box__value', { 'info_box__value--disabled': !accountAddress })}>{countUp}</div>
           }
           <div className={classNames('info_box__title', { 'info_box__title--disabled': !accountAddress })}>{secondTitle}</div>

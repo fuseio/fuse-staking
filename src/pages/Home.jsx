@@ -37,7 +37,7 @@ export default ({ handleConnect }) => {
   const validators = useSelector(state => state.entities.validators)
   const yourStake = get(validators, [validator, 'yourStake'], 0)
 
-  const myTotal = useMemo(() => Object.values(validators).reduce((accumulator, { yourStake }) => accumulator.plus(new BigNumber(yourStake)), new BigNumber(0)), [validators])
+  const myTotal = useMemo(() => Object.values(validators).reduce((accumulator, { yourStake }) => accumulator.plus(new BigNumber(yourStake ?? 0)), new BigNumber(0)), [validators])
 
   const [modalStatus, setModalStatus] = useState(false)
   const [secondModalStatus, setSecondModalStatus] = useState(false)
@@ -194,6 +194,7 @@ export default ({ handleConnect }) => {
             end={isNaN(formatWeiToNumber(myTotal)) ? 0 : formatWeiToNumber(myTotal)}
             secondEnd={isNaN(formatWeiToNumber(totalStakeAmount)) ? 0 : formatWeiToNumber(totalStakeAmount)}
             title='Your total staked'
+            decimals={2}
             secondTitle='Total staked'
             Icon={() => (
               <img src={metricIcon} />
