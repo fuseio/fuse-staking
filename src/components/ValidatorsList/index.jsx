@@ -104,7 +104,7 @@ const ValidatorsList = () => {
           },
           {
             accessor: 'upTime',
-            Header: <TableHeader header='Up time' tooltipText='The % of blocks filled since each validator has been live.' id='upTime' />
+            Header: <TableHeader header='Up time' tooltipText='The % of blocks filled by the validator over a 28 day rolling window.' id='upTime' />
           },
           {
             accessor: 'website',
