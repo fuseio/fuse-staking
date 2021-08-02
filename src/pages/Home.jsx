@@ -9,7 +9,6 @@ import Tabs from '@/components/Tabs'
 import InfoBox from '@/components/common/InfoBox'
 import LargeInfoBox from '@/components/common/LargeInfoBox'
 import briefcaseIcon from '@/assets/images/briefcase-check.svg'
-import SwitchToFuse from '@/assets/images/step_1.png'
 import SwitchToFuseGuide from '@/assets/images/step_2.png'
 import metricIcon from '@/assets/images/metric.svg'
 import blockCubeIcon from '@/assets/images/block_cude.svg'
@@ -26,6 +25,8 @@ import {
   getBlockRewardAmount,
   getBlockNumber
 } from '@/actions/consensus'
+import { switchNetwork } from '@/actions/network'
+import { networkIds } from '@/utils/network'
 
 export default ({ handleConnect }) => {
   const dispatch = useDispatch()
@@ -94,32 +95,18 @@ export default ({ handleConnect }) => {
     <ReactModal isOpen={modalStatus} overlayClassName='modal__overlay' className='modal__content'>
       <div className='info-modal'>
         <div className='title'>
-          Connect to FUSE network
-        </div>
-        <div>
-          <img src={SwitchToFuse} />
+          Unsupported network
         </div>
         <div className='text'>
-          Click
-          <strong
-            style={{ cursor: 'pointer' }}
-            onClick={() => {
-              setModalStatus(false)
-              showSecondModal()
-              setSecondModalStatus(true)
-            }}
-          >
-            {' here '}
-          </strong>
-          to learn how to add Fuse network to Metamask
+          Click on the button below to switch to fuse
         </div>
         <button
           className='close'
           onClick={() => {
-            setModalStatus(false)
+            dispatch(switchNetwork(networkIds.FUSE))
           }}
         >
-          Close
+          Switch to Fuse
         </button>
       </div>
     </ReactModal>
