@@ -9,7 +9,6 @@ import Tabs from '@/components/Tabs'
 import InfoBox from '@/components/common/InfoBox'
 import LargeInfoBox from '@/components/common/LargeInfoBox'
 import briefcaseIcon from '@/assets/images/briefcase-check.svg'
-import SwitchToFuseGuide from '@/assets/images/step_2.png'
 import metricIcon from '@/assets/images/metric.svg'
 import blockCubeIcon from '@/assets/images/block_cude.svg'
 import useInterval from '@/hooks/useInterval'
@@ -41,55 +40,11 @@ export default ({ handleConnect }) => {
   const myTotal = useMemo(() => Object.values(validators).reduce((accumulator, { yourStake }) => accumulator.plus(new BigNumber(yourStake ?? 0)), new BigNumber(0)), [validators])
 
   const [modalStatus, setModalStatus] = useState(false)
-  const [secondModalStatus, setSecondModalStatus] = useState(false)
 
   useEffect(() => {
     dispatch(getValidators())
     dispatch(getOldValidators())
   }, [])
-
-  const [showSecondModal] = useModal(() => (
-    <ReactModal isOpen={secondModalStatus} overlayClassName='modal__overlay' className='modal__content'>
-      <div className='info-modal'>
-        <div className='title'>
-          Add Fuse network to Metamask
-        </div>
-        <div>
-          <img src={SwitchToFuseGuide} />
-        </div>
-        <div className='text grid-y'>
-          <div className='grid-x cell align-middle shrink'>
-            <strong>Network name: </strong>
-            &nbsp;Fuse network
-          </div>
-          <div className='grid-x cell align-middle shrink'>
-            <strong>RPC Url: </strong>
-            &nbsp;https://rpc.fuse.io
-          </div>
-          <div className='grid-x cell align-middle shrink'>
-            <strong>ChainID: </strong>
-            &nbsp;0x7a
-          </div>
-          <div className='grid-x cell align-middle shrink'>
-            <strong>Symbol: </strong>
-            &nbsp;FUSE
-          </div>
-          <div className='grid-x cell align-middle shrink'>
-            <strong>Explorer: </strong>
-            &nbsp;https://explorer.fuse.io
-          </div>
-        </div>
-        <button
-          className='close'
-          onClick={() => {
-            setSecondModalStatus(false)
-          }}
-        >
-          Close
-        </button>
-      </div>
-    </ReactModal>
-  ), [modalStatus])
 
   const [showModal] = useModal(() => (
     <ReactModal isOpen={modalStatus} overlayClassName='modal__overlay' className='modal__content'>
@@ -113,8 +68,10 @@ export default ({ handleConnect }) => {
   ), [modalStatus])
 
   useEffect(() => {
-    dispatch(balanceOfNative(accountAddress))
-  }, [accountAddress])
+    if (accountAddress) {
+      dispatch(balanceOfNative(accountAddress))
+    }
+  }, [accountAddress, networkId])
 
   useEffect(() => {
     if (networkId) {

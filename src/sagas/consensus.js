@@ -61,8 +61,8 @@ function * getOldNodes () {
 }
 
 function * fetchValidatorData ({ address }) {
-  const { networkId, accountAddress } = yield select(state => state.network)
-  const web3 = yield getWeb3({ networkType: (!networkId || networkId !== 122) ? 'fuse' : null })
+  const { accountAddress } = yield select(state => state.network)
+  const web3 = yield getWeb3({ networkType: 'fuse' })
   const consensusContract = new web3.eth.Contract(ConsensusABI, CONFIG.consensusAddress)
   const calls = {
     stakeAmount: call(consensusContract.methods.stakeAmount(address).call),
@@ -74,9 +74,7 @@ function * fetchValidatorData ({ address }) {
     calls.yourStake = call(consensusContract.methods.delegatedAmount(accountAddress, address).call)
   }
 
-  const response = yield all(calls)
-
-  return response
+  return yield all(calls)
 }
 
 function * fetchValidatorMetadata ({ address }) {

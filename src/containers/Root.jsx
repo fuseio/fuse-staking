@@ -8,7 +8,7 @@ import Footer from '@/components/common/Footer.jsx'
 import HomePage from '@/pages/Home'
 import { getWeb3 } from '@/services/web3'
 import useWeb3Connect from '@/hooks/useWeb3Connect'
-import { connectToWallet } from '@/actions/network'
+import { connectToWallet, disconnectWallet } from '@/actions/network'
 
 export default () => {
   const dispatch = useDispatch()
@@ -19,7 +19,18 @@ export default () => {
 
   const web3connect = useWeb3Connect(onConnectCallback)
 
-  // const handleLogout = useCallback(web3connect?.core?.clearCachedProvider, [web3connect])
+  const handleLogout = useCallback(async () => {
+    try {
+      if (web3connect?.provider?.close) {
+        await web3connect?.provider?.close()
+      }
+
+      await web3connect?.core?.clearCachedProvider()
+      dispatch(disconnectWallet())
+    } catch (e) {
+      console.error(e)
+    }
+  }, [web3connect])
 
   const handleConnect = useCallback(() => {
     web3connect.toggleModal()
@@ -38,7 +49,7 @@ export default () => {
 
   return (
     <>
-      <Header handleConnect={handleConnect} />
+      <Header handleConnect={handleConnect} handleLogout={handleLogout} />
       <Route component={GoogleAnalyticsReporter} />
       <Switch>
         <Route path='/'>
