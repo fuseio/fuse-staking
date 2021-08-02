@@ -48,6 +48,10 @@
     text-align: center;
     color: $color-primary-dark;
     @include xy-grid();
+
+    > img {
+      margin-right: 0.15em;
+    }
     @include flex-align(justify, middle);
     @include breakpoint(medium up) {
       margin-right: 1.3em;
@@ -67,6 +71,7 @@
       @include breakpoint(medium down) {
         margin: 4em 0 2em;
         @include xy-grid(vertical);
+        @include flex-align(null, middle);
       }
     }
 
@@ -76,7 +81,9 @@
 
     @include modifier(dark) {
       color: #083549;
+
       &:hover {
+        color: #083549;
         text-decoration: underline;
       }
     }
@@ -92,10 +99,13 @@
   }
   @include element(logo) {
     cursor: pointer;
+    @include xy-grid(horizontal);
+    @include flex-align(null, middle);
 
     @include xy-cell(8, null, 0);
 
     > img {
+      margin-left: 0.3em;
       width: 100px;
     }
 
@@ -125,6 +135,7 @@
     height: 40px;
     border-radius: 100px;
     padding: 0.8em;
+    position: relative;
 
     @include modifier(logged-out) {
       background: $color-primary-dark;
@@ -171,6 +182,37 @@
       line-height: 14px;
       @include breakpoint(small down) {
         font-size: 0.8em;
+      }
+    }
+
+    @include element(wrapper) {
+      position: relative;
+    }
+
+    @include element(dropdown) {
+      position: absolute;
+      display: none;
+      top: 56px;
+      right: 0;
+      width: 350px;
+      padding: 16px;
+      border-radius: 20px;
+      background-color: white;
+      box-shadow: 0px 0px 30px rgba(21, 53, 80, 0.12);
+
+      @include modifier(open) {
+        display: block;
+      }
+    }
+
+    @include element(disconnect) {
+      text-align: center;
+      font-size: 0.938em;
+
+      @include element(link) {
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }

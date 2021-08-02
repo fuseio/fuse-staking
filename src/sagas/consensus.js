@@ -10,7 +10,7 @@ import { balanceOfNative } from '@/actions/accounts'
 import { fetchNodeByAddress, fetchOldNodes } from '@/services/api/boot'
 
 function * getTotalStakeAmount () {
-  const web3 = yield getWeb3()
+  const web3 = yield getWeb3({ networkType: 'fuse' })
   const consensusContract = new web3.eth.Contract(ConsensusABI, CONFIG.consensusAddress)
   const totalStakeAmount = yield call(consensusContract.methods.totalStakeAmount().call)
   yield put({
@@ -22,8 +22,7 @@ function * getTotalStakeAmount () {
 }
 
 function * getValidators () {
-  const { networkId } = yield select(state => state.network)
-  const web3 = yield getWeb3({ networkType: (!networkId || networkId !== 122) ? 'fuse' : null })
+  const web3 = yield getWeb3({ networkType: 'fuse' })
   const consensusContract = new web3.eth.Contract(ConsensusABI, CONFIG.consensusAddress)
   const validators = yield call(consensusContract.methods.getValidators().call)
   const entities = keyBy(validators, (address) => address)
@@ -61,8 +60,8 @@ function * getOldNodes () {
 }
 
 function * fetchValidatorData ({ address }) {
-  const { networkId, accountAddress } = yield select(state => state.network)
-  const web3 = yield getWeb3({ networkType: (!networkId || networkId !== 122) ? 'fuse' : null })
+  const { accountAddress } = yield select(state => state.network)
+  const web3 = yield getWeb3({ networkType: 'fuse' })
   const consensusContract = new web3.eth.Contract(ConsensusABI, CONFIG.consensusAddress)
   const calls = {
     stakeAmount: call(consensusContract.methods.stakeAmount(address).call),
@@ -74,9 +73,7 @@ function * fetchValidatorData ({ address }) {
     calls.yourStake = call(consensusContract.methods.delegatedAmount(accountAddress, address).call)
   }
 
-  const response = yield all(calls)
-
-  return response
+  return yield all(calls)
 }
 
 function * fetchValidatorMetadata ({ address }) {
@@ -149,7 +146,7 @@ function * delegate ({ validatorAddress, amount }) {
 }
 
 function * getBlockRewardAmount () {
-  const web3 = yield getWeb3()
+  const web3 = yield getWeb3({ networkType: 'fuse' })
   const blockRewardContract = new web3.eth.Contract(BlockRewardABI, CONFIG.blockRewardAddress)
   const rewardPerBlock = yield call(blockRewardContract.methods.getBlockRewardAmount().call)
   yield put({
@@ -161,7 +158,7 @@ function * getBlockRewardAmount () {
 }
 
 function * getBlockRewardAmountPerValidator ({ address }) {
-  const web3 = yield getWeb3()
+  const web3 = yield getWeb3({ networkType: 'fuse' })
   const blockRewardContract = new web3.eth.Contract(BlockRewardABI, CONFIG.blockRewardAddress)
   const rewardPerYourBlock = yield call(blockRewardContract.methods.getBlockRewardAmountPerValidator(address).call)
   yield put({

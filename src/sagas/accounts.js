@@ -8,7 +8,7 @@ import { BasicToken as BasicTokenABI } from '@/constants/abi'
 function * balanceOfToken ({ tokenAddress }) {
   const { accountAddress } = yield select(state => state.network)
   if (tokenAddress) {
-    const web3 = yield getWeb3()
+    const web3 = yield getWeb3({ networkType: 'fuse' })
     const basicTokenContract = new web3.eth.Contract(BasicTokenABI, tokenAddress)
     const balanceOf = yield call(basicTokenContract.methods.balanceOf(accountAddress).call)
 
@@ -23,7 +23,7 @@ function * balanceOfToken ({ tokenAddress }) {
 
 function * balanceOfNative ({ accountAddress }) {
   if (accountAddress) {
-    const web3 = yield getWeb3()
+    const web3 = yield getWeb3({ networkType: 'fuse' })
     const balanceOfNative = yield call(web3.eth.getBalance, accountAddress)
 
     yield put({
