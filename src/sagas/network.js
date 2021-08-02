@@ -5,6 +5,7 @@ import * as actions from '@/actions/network'
 import { getProviderInfo } from 'web3modal'
 import { eventChannel } from 'redux-saga'
 import { getValidators } from '@/actions/consensus'
+import { getNetwork } from '@/utils/network'
 
 function * getNetworkTypeInternal (web3) {
   const networkId = yield web3.eth.net.getId()
@@ -130,11 +131,41 @@ function * getBlockNumber ({ networkType, bridgeType }) {
   })
 }
 
+function * switchNetwork ({ networkId }) {
+  try {
+    const web3 = yield getWeb3Service()
+    const provider = web3.currentProvider
+    const network = getNetwork(networkId)
+    
+    const response = yield call(provider.request, {
+      method: 'wallet_addEthereumChain',
+      params: [
+        {
+          chainId: network.chainId,
+          chainName: network.chainName,
+          nativeCurrency: network.nativeCurrency,
+          rpcUrls: [network.rpc],
+          blockExplorerUrls: [network.explorer]
+        }
+      ]
+    })
+
+    if (response == null) {
+      yield put({ type: actions.SWITCH_NETWORK.SUCCESS, response })
+    } else {
+      yield put({ type: actions.SWITCH_NETWORK.FAILURE, error: response })
+    }
+  } catch (error) {
+    yield put({ type: actions.SWITCH_NETWORK.FAILURE, error })
+  }
+}
+
 export default function * web3Saga () {
   yield all([
     takeEvery(actions.CHECK_NETWORK_TYPE.REQUEST, checkNetworkType),
     takeEvery(actions.GET_BLOCK_NUMBER.REQUEST, getBlockNumber),
     takeEvery(actions.CONNECT_TO_WALLET.REQUEST, connectToWallet),
-    takeEvery(actions.CHECK_ACCOUNT_CHANGED.REQUEST, checkAccountChanged)
+    takeEvery(actions.CHECK_ACCOUNT_CHANGED.REQUEST, checkAccountChanged),
+    takeEvery(actions.SWITCH_NETWORK.REQUEST, switchNetwork)
   ])
 }
