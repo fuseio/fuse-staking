@@ -8,7 +8,7 @@
     "boot": "https://bot.fuse.io/api/v1"
   },
   "reactGA": {
-    "trackingId": "UA-145420511-5",
+    "trackingId": "G-LHHHX57LEJ",
     "gaOptions": {
       "testMode": true,
       "debug": true
