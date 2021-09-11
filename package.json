@@ -29,7 +29,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.12",
-    "@walletconnect/web3-provider": "^1.5.2",
+    "@fuseio/walletconnect-web3-provider": "^1.5.4",
     "bignumber.js": "^9.0.1",
     "classnames": "^2.2.6",
     "config": "^3.3.3",
