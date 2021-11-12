@@ -40,11 +40,13 @@ function * getOldNodes () {
   const oldNodes = yield call(fetchOldNodes)
   const validators = Object.keys(oldNodes)
   for (const address in oldNodes) {
+    const validatorData = yield call(fetchValidatorData, { address })
     yield put({
       type: actions.FETCH_VALIDATOR_METADATA.SUCCESS,
       entity: 'validators',
       response: {
         address,
+        ...validatorData,
         ...omit(oldNodes[address], ['forDelegation']),
         oldNode: true
       }
@@ -53,8 +55,9 @@ function * getOldNodes () {
   yield put({
     type: actions.GET_VALIDATORS.SUCCESS,
     response: {
-      entities: validators,
-      numberOfValidators: numberOfValidators + validators.length
+      entities: keyBy(validators, (address) => address),
+      numberOfValidators: numberOfValidators + validators.length,
+      isOld: true,
     }
   })
 }
@@ -93,7 +96,10 @@ function * fetchValidatorMetadata ({ address }) {
   })
 }
 
-function * watchGetValidators ({ response: { entities } }) {
+function * watchGetValidators ({ response: { entities, isOld } }) {
+  if (isOld) {
+    return
+  }
   for (const validatorAddress in entities) {
     yield put(actions.fetchValidatorMetadata(validatorAddress))
   }
