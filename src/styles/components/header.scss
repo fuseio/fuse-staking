@@ -31,8 +31,8 @@
       display: flex;
       flex-direction: column;
       justify-content: normal;
-      padding: 0 0 60px;
-      border-radius: 0 0 60px 60px;
+      padding: 0 0 50px;
+      border-radius: 0 0 50px 50px;
       box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.2);
     }
   }
@@ -156,6 +156,10 @@
       background: $color-white;
       border: 2px solid $color-primary-dark;
 
+      @include breakpoint(small down) {
+        margin-bottom: 2em;
+      }
+
       .text {
         color: $color-primary-dark;
       }
@@ -194,7 +198,6 @@
       display: none;
       top: 56px;
       right: 0;
-      width: 350px;
       padding: 16px;
       border-radius: 20px;
       background-color: white;
@@ -203,11 +206,30 @@
       @include modifier(open) {
         display: block;
       }
+
+      @include breakpoint(medium up) {
+        width: 350px;
+      }
     }
 
     @include element(disconnect) {
       text-align: center;
       font-size: 0.938em;
+
+      @include element(link) {
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    //
+    @include element(disconnect_mobile) {
+      text-align: center;
+      font-size: 0.938em;
+      @include breakpoint(medium up) {
+        display: none;
+      }
 
       @include element(link) {
         &:hover {

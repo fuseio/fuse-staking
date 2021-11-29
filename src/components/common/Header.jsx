@@ -89,6 +89,15 @@ const NavBar = ({ history, handleConnect, handleLogout }) => {
                       </a>
                     </div>
                   </div>
+                  <div className='header__wallet__disconnect_mobile'>
+                    <a
+                      href='#' className='header__wallet__disconnect__link' onClick={(e) => {
+                        e.preventDefault()
+                        handleLogout()
+                      }}
+                    >Disconnect
+                    </a>
+                  </div>
                 </div>
                 )
               : (
