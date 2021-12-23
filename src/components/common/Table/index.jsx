@@ -7,7 +7,7 @@ import BodyRow from './BodyRow'
 import HeaderRow from './HeaderRow'
 import ShowOnlyDelegators from './ShowOnlyDelegators'
 import ShowOnlyOldNodes from './ShowOnlyOldNodes'
-// import ShowOnlyStaked from './ShowOnlyStaked'
+import ShowOnlyStaked from './ShowOnlyStaked'
 
 const MyTable = ({
   columns,
@@ -57,6 +57,7 @@ const MyTable = ({
         <div className='table__radios'>
           {!formik.values.showOnlyOldNodes && <ShowOnlyDelegators />}
           <ShowOnlyOldNodes />
+          <ShowOnlyStaked />
         </div>
       </div>
       <table {...getTableProps({ className: 'table' })}>

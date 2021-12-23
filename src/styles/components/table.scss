@@ -105,7 +105,7 @@
       @include xy-grid(vertical);
       @include flex-align(null, null);
       > div {
-        &:first-child {
+        &:not(:last-child) {
           margin-bottom: 1em;
         }
       }
@@ -115,7 +115,7 @@
       @include xy-grid();
       @include flex-align(null, middle);
       > div {
-        &:first-child {
+        &:not(:last-child) {
           margin-right: 1em;
         }
       }
