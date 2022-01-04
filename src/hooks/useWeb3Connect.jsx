@@ -14,12 +14,12 @@ const providerOptions = {
       },
     },
   },
-  'custom-walletlink': {
+  'custom-coinbase': {
     display: {
       logo:
         'https://raw.githubusercontent.com/walletlink/walletlink/master/web/src/images/wallets/coinbase-wallet.svg',
-      name: 'WalletLink',
-      description: 'Scan with WalletLink to connect',
+      name: 'Coinbase Wallet',
+      description: 'Scan with Coinbase Wallet to connect',
     },
     options: {
       appName: 'Fuse Staking',
