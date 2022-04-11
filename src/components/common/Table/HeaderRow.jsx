@@ -18,8 +18,8 @@ export default ({
             <span className='table__header__cell__sort'>
               {column.isSorted
                 ? (column.isSortedDesc
-                  ? <FontAwesomeIcon icon={faArrowDown} />
-                  : <FontAwesomeIcon icon={faArrowUp} />)
+                    ? <FontAwesomeIcon icon={faArrowDown} />
+                    : <FontAwesomeIcon icon={faArrowUp} />)
                 : ''}
             </span>
           </th>
