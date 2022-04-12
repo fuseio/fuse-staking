@@ -8,35 +8,35 @@ const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider,
     options: {
-      bridge: 'https://walletconnect.fuse.io',
+      bridge: 'https://walletconnect-bridge.fuse.io',
       rpc: {
-        122: 'https://rpc.fuse.io',
-      },
-    },
+        122: 'https://rpc.fuse.io'
+      }
+    }
   },
   'custom-coinbase': {
     display: {
       logo:
         'https://raw.githubusercontent.com/walletlink/walletlink/master/web/src/images/wallets/coinbase-wallet.svg',
       name: 'Coinbase Wallet',
-      description: 'Scan with Coinbase Wallet to connect',
+      description: 'Scan with Coinbase Wallet to connect'
     },
     options: {
       appName: 'Fuse Staking',
-      networkUrl: `https://rpc.fuse.io`,
-      chainId: 122,
+      networkUrl: 'https://rpc.fuse.io',
+      chainId: 122
     },
     package: WalletLink,
     connector: async (_, options) => {
       const { appName, networkUrl, chainId } = options
       const walletLink = new WalletLink({
-        appName,
+        appName
       })
       const provider = walletLink.makeWeb3Provider(networkUrl, chainId)
       await provider.enable()
       return provider
-    },
-  },
+    }
+  }
 }
 
 const useWeb3Connect = (connectCallback) => {

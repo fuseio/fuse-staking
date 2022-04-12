@@ -47,7 +47,7 @@ const SelectedValidator = () => {
             </div>
           </div>
         </div>
-      )
+        )
       : <AvatarWithText />
   )
 }

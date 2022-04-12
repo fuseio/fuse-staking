@@ -57,7 +57,7 @@ function * getOldNodes () {
     response: {
       entities: keyBy(validators, (address) => address),
       numberOfValidators: numberOfValidators + validators.length,
-      isOld: true,
+      isOld: true
     }
   })
 }
