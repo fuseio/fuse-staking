@@ -8,7 +8,7 @@ const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider,
     options: {
-      bridge: 'https://walletconnect.fuse.io',
+      bridge: 'https://walletconnect-bridge.fuse.io',
       rpc: {
         122: 'https://rpc.fuse.io'
       }
