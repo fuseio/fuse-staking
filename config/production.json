@@ -1,4 +1,7 @@
 {
+  "web3": {
+    "fuseProvider": "https://nethermind-labsrpc.fuse.io"
+  },
   "reactGA": {
     "gaOptions": {
       "testMode": false,

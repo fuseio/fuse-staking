@@ -21,12 +21,12 @@ if (typeof CONFIG?.reactGA?.trackingId === 'string') {
   ReactGA.initialize('test', { testMode: true, debug: true })
 }
 
-// window.addEventListener('error', error => {
-//   ReactGA.exception({
-//     description: `${error.message} @ ${error.filename}:${error.lineno}:${error.colno}`,
-//     fatal: true
-//   })
-// });
+window.addEventListener('error', error => {
+  ReactGA.exception({
+    description: `${error.message} @ ${error.filename}:${error.lineno}:${error.colno}`,
+    fatal: true
+  })
+});
 
 // imports all images so webpack can compile them
 ((ctx) => {
@@ -40,4 +40,3 @@ if (typeof CONFIG?.reactGA?.trackingId === 'string') {
 })(require.context('./assets', true, /.*/))
 
 root.render(<App />)
-// render(<App />, document.getElementById('root'))

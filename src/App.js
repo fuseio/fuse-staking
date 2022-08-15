@@ -6,8 +6,6 @@ import { Provider } from 'react-redux'
 import Root from '@/containers/Root.jsx'
 import rootSaga from '@/sagas/index'
 import configureStore from '@/store/configureStore'
-import ScrollToTopController from '@/hooks/useScrollToTopController'
-// import reportWebVitals from './reportWebVitals'
 
 const { store } = configureStore(window.__INITIAL_STATE__)
 

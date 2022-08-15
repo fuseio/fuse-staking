@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react'
 import classNames from 'classnames'
-// import { withRouter } from 'react-router'
 import get from 'lodash/get'
 import { useSelector } from 'react-redux'
 import useOutsideClick from '@/hooks/useOutsideClick.jsx'
