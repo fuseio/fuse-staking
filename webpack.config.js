@@ -3,23 +3,22 @@ const path = require('path')
 const config = require('config')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const ProgressBarPlugin = require('progress-bar-webpack-plugin')
+const ProgressPlugin = require('progress-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 
 const isDev = process.env.NODE_ENV === 'development'
 const sourceMap = isDev
 
-module.exports = {
-  entry: [
-    'react-hot-loader/patch',
-    './src/index.js'
-  ],
+const webpackConfig = {
+  mode: isDev ? 'development' : 'production',
+  entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
-    filename: '[name].[hash].js'
+    filename: '[name].[contenthash].js'
   },
   module: {
     rules: [
@@ -31,16 +30,12 @@ module.exports = {
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
-          !isDev
-            ? {
-                loader: MiniCssExtractPlugin.loader,
-                options: {
-                  publicPath: '/'
-                }
-              }
-            : {
-                loader: 'style-loader'
-              },
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: '/'
+            }
+          },
           {
             loader: 'css-loader',
             options: {
@@ -63,14 +58,17 @@ module.exports = {
           {
             loader: 'sass-loader',
             options: {
-              sourceMap
+              sourceMap: true
             }
           }
         ]
       },
       {
+        test: /\.svg$/,
+        use: 'file-loader'
+      },
+      {
         test: /\.(gif|png|jpe?g)$/i,
-        exclude: [/fonts/],
         use: [
           {
             loader: 'file-loader',
@@ -101,31 +99,6 @@ module.exports = {
           }
         ]
       },
-      {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        issuer: {
-          test: /\.(sa|sc|c)ss$/
-        },
-        use: [
-          'babel-loader',
-          {
-            loader: '@svgr/webpack',
-            options: {
-              native: true
-            }
-          },
-          {
-            loader: 'file-loader',
-            options: {
-              publicPath: '/'
-            }
-          }
-        ]
-      },
-      {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url-loader'
-      }
     ]
   },
   resolve: {
@@ -136,18 +109,17 @@ module.exports = {
       '.svg'
     ],
     alias: {
-      'react-dom': '@hot-loader/react-dom',
       '@': path.resolve(path.resolve(__dirname, './'), 'src')
     }
   },
   devServer: {
-    contentBase: './dist',
     historyApiFallback: true,
     hot: true
   },
   plugins: [
+    new NodePolyfillPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new ProgressBarPlugin(),
+    new ProgressPlugin(true),
     new webpack.DefinePlugin({ CONFIG: JSON.stringify(config) }),
     new FaviconsWebpackPlugin({
       logo: path.join(path.resolve(__dirname, './'), '/src/assets/images/favicon.png'),
@@ -156,7 +128,6 @@ module.exports = {
         appName: 'Fuse Staking',
         appDescription: 'Fuse Staking DApp',
         developerName: 'Lior Agnin',
-        developerURL: null,
         icons: {
           android: true,
           appleIcon: true,
@@ -201,3 +172,11 @@ module.exports = {
     }
   }
 }
+
+module.exports = (env, argv) => {
+  if (argv.hot) {
+    webpackConfig.output.filename = '[name].[fullhash].js';
+  }
+
+  return webpackConfig;
+};

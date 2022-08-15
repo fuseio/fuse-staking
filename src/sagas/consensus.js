@@ -63,7 +63,6 @@ function * getOldNodes () {
 }
 
 function * fetchValidatorData ({ address }) {
-  const { accountAddress } = yield select(state => state.network)
   const web3 = yield getWeb3({ networkType: 'fuse' })
   const consensusContract = new web3.eth.Contract(ConsensusABI, CONFIG.consensusAddress)
   const calls = {
@@ -72,6 +71,7 @@ function * fetchValidatorData ({ address }) {
     delegatorsLength: call(consensusContract.methods.delegatorsLength(address).call)
   }
 
+  const { accountAddress } = yield select(state => state.network)
   if (accountAddress) {
     calls.yourStake = call(consensusContract.methods.delegatedAmount(accountAddress, address).call)
   }

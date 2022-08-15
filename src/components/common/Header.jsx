@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import classNames from 'classnames'
-import { withRouter } from 'react-router'
+// import { withRouter } from 'react-router'
 import get from 'lodash/get'
 import { useSelector } from 'react-redux'
 import useOutsideClick from '@/hooks/useOutsideClick.jsx'
@@ -10,7 +10,7 @@ import fuseLogoWhite from '@/assets/images/FuseLogo.png'
 import explorerIcon from '@/assets/images/explorer.svg'
 import stakingIcon from '@/assets/images/staking-icon.svg'
 
-const NavBar = ({ history, handleConnect, handleLogout }) => {
+const NavBar = ({ handleConnect, handleLogout }) => {
   const [isOpen, setMenuOpen] = useState(false)
   const [isDropdownOpen, setDropdownOpen] = useState(false)
   const { accountAddress, providerInfo } = useSelector(state => state.network)
@@ -23,8 +23,6 @@ const NavBar = ({ history, handleConnect, handleLogout }) => {
     }
   })
 
-  const homePage = () => history.push('/')
-
   useOutsideClick(dropdownRef, () => {
     if (isDropdownOpen) {
       setDropdownOpen(false)
@@ -34,7 +32,7 @@ const NavBar = ({ history, handleConnect, handleLogout }) => {
   return (
     <header className='header__wrapper'>
       <div className='header'>
-        <div onClick={homePage} className='header__logo'>
+        <div className='header__logo'>
           <img alt='logo' src={fuseLogoWhite} />
         </div>
         <button ref={hamburgerRef} className='hamburger-button__container' onClick={() => setMenuOpen(!isOpen)}>
@@ -113,4 +111,4 @@ const NavBar = ({ history, handleConnect, handleLogout }) => {
   )
 }
 
-export default withRouter(NavBar)
+export default NavBar

@@ -6,7 +6,8 @@ import { formatNumber } from '@/utils/format'
 
 const GrayContainer = ({ title, estimatedAPR, end, modifier, symbol }) => {
   const { accountAddress } = useSelector(state => state.network)
-  const { countUp, start, update } = useCountUp({
+  const { start, update } = useCountUp({
+    ref: 'counter',
     formattingFn: formatNumber,
     end
   })
@@ -28,7 +29,11 @@ const GrayContainer = ({ title, estimatedAPR, end, modifier, symbol }) => {
         </div>
       </div>
       <div className='grid-x align-justify align-middle'>
-        <div className={classNames('value', { 'value--disabled': !accountAddress })}>{countUp} {symbol}</div>
+      <div className={classNames('value', { 'value--disabled': !accountAddress })}>
+        <span>{countUp}</span>
+        {symbol}
+        </div>
+        {/* <div className={classNames('value', { 'value--disabled': !accountAddress })} id='counter' /> */}
       </div>
     </div>
   )

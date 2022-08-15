@@ -1,7 +1,6 @@
 import ReactGA from 'react-ga4'
 import React, { useEffect, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { Switch, Route } from 'react-router'
 import Header from '@/components/common/Header.jsx'
 import GoogleAnalyticsReporter from '@/components/analytics'
 import Footer from '@/components/common/Footer.jsx'
@@ -50,12 +49,7 @@ export default () => {
   return (
     <>
       <Header handleConnect={handleConnect} handleLogout={handleLogout} />
-      <Route component={GoogleAnalyticsReporter} />
-      <Switch>
-        <Route path='/'>
-          <HomePage handleConnect={handleConnect} />
-        </Route>
-      </Switch>
+      <HomePage handleConnect={handleConnect} />
       <Footer />
     </>
   )
