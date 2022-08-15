@@ -7,7 +7,7 @@ import { formatNumber } from '@/utils/format'
 export default ({ Icon, name, title, end, withSymbol = true, symbol, decimals }) => {
   const { accountAddress } = useSelector(state => state.network)
   const { start, update } = useCountUp({
-    ref: 'counter',
+    ref: name.split(' ').join(''),
     formattingFn: formatNumber,
     end,
     decimals
@@ -32,11 +32,11 @@ export default ({ Icon, name, title, end, withSymbol = true, symbol, decimals })
             withSymbol
               ? (
                 <div className={classNames('info_box__value', { 'info_box__value--disabled': !accountAddress })}>
-                  <span id='counter'>{countUp}</span>&nbsp;
+                  <span id={name.split(' ').join('')} />&nbsp;
                   {symbol}
                 </div>
                 )
-              : <div className={classNames('info_box__value', { 'info_box__value--disabled': !accountAddress })} id='counter' />
+              : <div className={classNames('info_box__value', { 'info_box__value--disabled': !accountAddress })} id={name.split(' ').join('')} />
           }
           <div className={classNames('info_box__title', { 'info_box__title--disabled': !accountAddress })}>{title}</div>
         </div>

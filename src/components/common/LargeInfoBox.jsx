@@ -6,15 +6,15 @@ import { formatNumber } from '@/utils/format'
 
 export default ({ Icon, name, title, end, secondEnd, withSymbol = true, symbol, secondTitle, decimals }) => {
   const { accountAddress } = useSelector(state => state.network)
-  const { countUp, start, update } = useCountUp({
-    ref: 'counter1',
+  const { start, update } = useCountUp({
+    ref: title.split(' ').join(''),
     formattingFn: formatNumber,
     end,
     decimals
   })
 
   const secondCounter = useCountUp({
-    ref: 'counter2',
+    ref: secondTitle.split(' ').join(''),
     formattingFn: formatNumber,
     end
   })
@@ -43,11 +43,11 @@ export default ({ Icon, name, title, end, secondEnd, withSymbol = true, symbol, 
             withSymbol
               ? (
                 <div className={classNames('info_box__value', { 'info_box__value--disabled': !accountAddress })}>
-                  <span id='counter1'>{countUp}</span>&nbsp;
+                  <span id={title.split(' ').join('')} />&nbsp;
                   {symbol}
                 </div>
                 )
-              : <div className={classNames('info_box__value', { 'info_box__value--disabled': !accountAddress })} id='counter1' />
+              : <div className={classNames('info_box__value', { 'info_box__value--disabled': !accountAddress })} id={title.split(' ').join('')} />
           }
           <div className={classNames('info_box__title', { 'info_box__title--disabled': !accountAddress })}>{title}</div>
         </div>
@@ -56,9 +56,12 @@ export default ({ Icon, name, title, end, secondEnd, withSymbol = true, symbol, 
           {
             withSymbol
               ? (
-                <div id='counter2' className={classNames('info_box__value', { 'info_box__value--disabled': !accountAddress })} />
+                <div className={classNames('info_box__value', { 'info_box__value--disabled': !accountAddress })}>
+                  <span id={secondTitle.split(' ').join('')} />&nbsp;
+                    {symbol}
+                  </div>
                 )
-              : <div className={classNames('info_box__value', { 'info_box__value--disabled': !accountAddress })} id='counter2' />
+              : <div className={classNames('info_box__value', { 'info_box__value--disabled': !accountAddress })} id={secondTitle.split(' ').join('')} />
           }
           <div className={classNames('info_box__title', { 'info_box__title--disabled': !accountAddress })}>{secondTitle}</div>
         </div>

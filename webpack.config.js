@@ -112,10 +112,6 @@ const webpackConfig = {
       '@': path.resolve(path.resolve(__dirname, './'), 'src')
     }
   },
-  devServer: {
-    historyApiFallback: true,
-    hot: true
-  },
   plugins: [
     new NodePolyfillPlugin(),
     new webpack.HotModuleReplacementPlugin(),
