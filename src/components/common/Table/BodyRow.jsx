@@ -22,7 +22,7 @@ export default ({
 
   const [props, set] = useSpring(() => ({
     transform: 'scale(1)',
-    from: { transform: 'scale(0.99)' },
+    from: { transform: 'scale(0.9995)' },
     config: { tension: 400, mass: 2, velocity: 5 }
   }))
 
