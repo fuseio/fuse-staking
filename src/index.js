@@ -1,10 +1,16 @@
+import './styles/styles.scss'
 import React from 'react'
+import { createRoot } from 'react-dom/client'
 import { isMobile } from 'react-device-detect'
+import Modal from 'react-modal'
 import ReactGA from 'react-ga4'
-import { render } from 'react-dom'
 
 import App from './App'
-import './styles/styles.scss'
+
+const container = document.getElementById('root')
+const root = createRoot(container)
+
+Modal.setAppElement(container)
 
 if (typeof CONFIG?.reactGA?.trackingId === 'string') {
   ReactGA.initialize(CONFIG?.reactGA?.trackingId, CONFIG.reactGA.gaOptions)
@@ -33,4 +39,4 @@ window.addEventListener('error', error => {
   }, {})
 })(require.context('./assets', true, /.*/))
 
-render(<App />, document.getElementById('root'))
+root.render(<App />)

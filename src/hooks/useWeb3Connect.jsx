@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@fuseio/walletconnect-web3-provider'
-import WalletLink from 'walletlink'
+import CoinbaseWalletSDK from '@coinbase/wallet-sdk'
 
 const providerOptions = {
   metamask: {},
@@ -10,31 +10,16 @@ const providerOptions = {
     options: {
       bridge: 'https://walletconnect.fuse.io',
       rpc: {
-        122: 'https://rpc.fuse.io'
+        122: CONFIG.web3.fuseProvider
       }
     }
   },
-  'custom-coinbase': {
-    display: {
-      logo:
-        'https://raw.githubusercontent.com/walletlink/walletlink/master/web/src/images/wallets/coinbase-wallet.svg',
-      name: 'Coinbase Wallet',
-      description: 'Scan with Coinbase Wallet to connect'
-    },
+  coinbasewallet: {
+    package: CoinbaseWalletSDK,
     options: {
-      appName: 'Fuse Staking',
-      networkUrl: 'https://rpc.fuse.io',
-      chainId: 122
-    },
-    package: WalletLink,
-    connector: async (_, options) => {
-      const { appName, networkUrl, chainId } = options
-      const walletLink = new WalletLink({
-        appName
-      })
-      const provider = walletLink.makeWeb3Provider(networkUrl, chainId)
-      await provider.enable()
-      return provider
+      appName: "Fuse Staking",
+      rpc: CONFIG.web3.fuseProvider,
+      chainId: 1,
     }
   }
 }
