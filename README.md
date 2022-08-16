@@ -1,1 +1,1 @@
-# Fuse-Staking-DApp
+# Fuse Staking
