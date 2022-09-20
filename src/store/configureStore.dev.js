@@ -1,11 +1,9 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import { createLogger } from 'redux-logger'
 import createSagaMiddleware, { END } from 'redux-saga'
-import { createBrowserHistory } from 'history'
 import rootReducer from '../reducers'
 
 export default function configureStore (initialState) {
-  const history = createBrowserHistory()
   const sagaMiddleware = createSagaMiddleware({
     // onError: (error, sec) => {
     //   Sentry.captureException(error)
@@ -40,5 +38,5 @@ export default function configureStore (initialState) {
   }
   store.runSaga = sagaMiddleware.run
   store.close = () => store.dispatch(END)
-  return { store, history }
+  return { store }
 }
