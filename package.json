@@ -7,7 +7,7 @@
     "staking"
   ],
   "standard": {
-    "parser": "babel-eslint",
+    "parser": "@babel/eslint-parser",
     "ignore": "src/constants/abi",
     "globals": [
       "CONFIG"
@@ -46,7 +46,6 @@
     "react-device-detect": "^2.2.2",
     "react-dom": "^18.2.0",
     "react-ga4": "^1.4.1",
-    "react-hot-loader": "^4.13.0",
     "react-modal": "^3.15.1",
     "react-modal-hook": "^3.0.2",
     "react-redux": "^8.0.2",
@@ -70,12 +69,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.18.10",
+    "@babel/eslint-parser": "^7.19.1",
     "@babel/preset-env": "^7.18.10",
     "@babel/preset-react": "^7.18.6",
-    "@hot-loader/react-dom": "^17.0.2",
     "@svgr/webpack": "^6.3.1",
     "autoprefixer": "^10.4.8",
-    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.5",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^11.0.0",
