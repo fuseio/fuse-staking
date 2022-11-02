@@ -58,7 +58,7 @@ const Footer = () => {
             )}
           />
           <HoverIcon
-            link='https://medium.com/fusenet'
+            link='https://news.fuse.io'
             Icon={() => (
               <div className='image' style={{ backgroundImage: `url(${mediumIcon})` }} />
             )}
