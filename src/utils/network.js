@@ -11,7 +11,7 @@ const networks = {
       symbol: 'FUSE',
       decimals: 18
     },
-    rpc: 'https://rpc.fuse.io',
+    rpc: CONFIG.web3.fuseProvider,
     explorer: 'https://explorer.fuse.io'
   }
 }
