@@ -11,7 +11,7 @@ const networks = {
       symbol: 'FUSE',
       decimals: 18
     },
-    rpc: 'https://rpc.fuse.io',
+    rpc: 'https://nd-942-551-550.p2pify.com/29d9adc81d097da8de657a5c8c773586',
     explorer: 'https://explorer.fuse.io'
   }
 }
