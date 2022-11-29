@@ -58,8 +58,8 @@ export default ({ Icon, name, title, end, secondEnd, withSymbol = true, symbol, 
               ? (
                 <div className={classNames('info_box__value', { 'info_box__value--disabled': !accountAddress })}>
                   <span id={secondTitle.split(' ').join('')} />&nbsp;
-                    {symbol}
-                  </div>
+                  {symbol}
+                </div>
                 )
               : <div className={classNames('info_box__value', { 'info_box__value--disabled': !accountAddress })} id={secondTitle.split(' ').join('')} />
           }
