@@ -45,14 +45,6 @@ const NavBar = ({ handleConnect, handleLogout }) => {
               rel='noreferrer noopener'
               className={classNames('header__link', { 'header__link--dark': isOpen })}
               target='_blank'
-              href='https://rewards.fuse.io/'
-            >
-              <img src={stakingIcon} /> Farming
-            </a>
-            <a
-              rel='noreferrer noopener'
-              className={classNames('header__link', { 'header__link--dark': isOpen })}
-              target='_blank'
               href='https://explorer.fuse.io/'
             >
               <img src={explorerIcon} /> Explorer
