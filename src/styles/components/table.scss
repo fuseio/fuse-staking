@@ -98,6 +98,44 @@
     padding: 2em 0 1em 2em;
   }
 
+  @include element(select) {
+    > input {
+      width: 20%;
+      height: 30px;
+      border: 2px solid $color-disabled;
+      box-sizing: border-box;
+      border-radius: 8px;
+      padding: 0 16px;
+
+      &:disabled {
+        cursor: not-allowed;
+      }
+      &::placeholder {
+        font-size: 0.938em;
+        color: $color-dark-gray;
+      }
+      &:focus {
+        border: 2px solid #869aac;
+      }
+    }
+    > button {
+      margin-left: 1em;
+      height: 24px;
+      width: 70px;
+      background: #ffffff;
+      border: 2px solid $color-primary-dark;
+      box-sizing: border-box;
+      border-radius: 100px;
+
+      > span {
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 11px;
+        color: $color-primary-dark;
+      }
+    }
+  }
+
   @include element(radios) {
     margin: 1em 0;
 
