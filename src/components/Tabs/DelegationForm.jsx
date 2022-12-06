@@ -1,3 +1,4 @@
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { Field, useFormikContext } from 'formik'
 import classNames from 'classnames'
@@ -17,24 +18,18 @@ const calcRewardPerYourBlocks = (
   stakeAmount,
   numberOfValidators,
   totalStakeAmount,
-  fee
-) =>
-  new BigNumber(rewardPerBlock)
-    .multipliedBy(new BigNumber(stakeAmount))
-    .multipliedBy(numberOfValidators)
-    .div(new BigNumber(totalStakeAmount))
-    .multipliedBy(1 - fee)
+  fee) => new BigNumber(rewardPerBlock)
+  .multipliedBy(new BigNumber(stakeAmount))
+  .multipliedBy(numberOfValidators)
+  .div(new BigNumber(totalStakeAmount))
+  .multipliedBy((1 - fee))
 
 export default ({ handleConnect }) => {
-  const { accountAddress } = useSelector((state) => state.network)
-  const accounts = useSelector((state) => state.accounts)
-  const validators = useSelector((state) => state.entities.validators)
-  const { validator, isWithdraw, isDelegate } = useSelector(
-    (state) => state.screens.stake
-  )
-  const { totalStakeAmount, numberOfValidators, rewardPerBlock } = useSelector(
-    (state) => state.consensus
-  )
+  const { accountAddress } = useSelector(state => state.network)
+  const accounts = useSelector(state => state.accounts)
+  const validators = useSelector(state => state.entities.validators)
+  const { validator, isWithdraw, isDelegate } = useSelector(state => state.screens.stake)
+  const { totalStakeAmount, numberOfValidators, rewardPerBlock } = useSelector(state => state.consensus)
   const balanceOfNative = get(accounts, [accountAddress, 'balanceOfNative'], 0)
   const yourStake = get(validators, [validator, 'yourStake'], 0)
   const fee = get(validators, [validator, 'fee'], 0)
@@ -59,16 +54,12 @@ export default ({ handleConnect }) => {
   return (
     <div className='form'>
       <div className='input__wrapper'>
-        <div
-          className={classNames('balance', {
-            'balance--disabled': !accountAddress || !validator
-          })}
-        >
-          Balance - <span>{formatWei(balanceToShow)} FUSE</span>
-        </div>
+        <div className={classNames('balance', { 'balance--disabled': !accountAddress || !validator })}>Balance - <span>{formatWei(balanceToShow)} FUSE</span></div>
         <div className='input'>
           <Field name='amount'>
-            {({ field }) => (
+            {({
+              field
+            }) => (
               <input
                 {...field}
                 disabled={!accountAddress || !validator}
@@ -81,47 +72,45 @@ export default ({ handleConnect }) => {
         </div>
       </div>
       <PercentageSelector balance={balanceToShow} />
-      {submitType === 'stake' && (
-        <GrayContainer
-          modifier={
-            validator && accountAddress
-              ? 'gray_container--fix-width'
-              : 'gray_container--fix-width gray_container--disabled'
-          }
-          symbol='FUSE'
-          estimatedAPR={
-            isNaN(estimatedAPR)
-              ? 0
-              : (formatWeiToNumber(estimatedAPR) * 100).toFixed(1)
-          }
-          title='Project rewards (1Y)'
-          end={isNaN(rewardPerYear) ? 0 : formatWeiToNumber(rewardPerYear)}
-        />
-      )}
-      {accountAddress && (
-        <button type='submit' disabled={!(isValid && dirty)} className='button'>
-          {capitalize(submitType)}&nbsp;&nbsp;
-          {(isDelegate || isWithdraw) && (
-            <img src={FuseLoader} alt='Fuse loader' />
-          )}
-        </button>
-      )}
-      {!accountAddress && (
-        <button
-          onClick={(e) => {
-            e.preventDefault()
-            handleConnect()
-          }}
-          className='button'
-        >
-          <img
-            style={{ width: '16px', marginRight: '.5em' }}
-            className='icon'
-            src={walletIcon}
+      {
+        submitType === 'stake' && (
+          <GrayContainer
+            modifier={validator && accountAddress ? 'gray_container--fix-width' : 'gray_container--fix-width gray_container--disabled'}
+            symbol='FUSE'
+            estimatedAPR={isNaN(estimatedAPR) ? 0 : (formatWeiToNumber(estimatedAPR) * 100).toFixed(1)}
+            title='Project rewards (1Y)'
+            end={isNaN(rewardPerYear) ? 0 : formatWeiToNumber(rewardPerYear)}
           />
-          Connect wallet
-        </button>
-      )}
+        )
+      }
+      {
+        accountAddress && (
+          <button
+            type='submit'
+            disabled={!(isValid && dirty)}
+            className='button'
+          >
+            {capitalize(submitType)}&nbsp;&nbsp;
+            {
+              (isDelegate || isWithdraw) && <img src={FuseLoader} alt='Fuse loader' />
+            }
+          </button>
+        )
+      }
+      {
+        !accountAddress && (
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              handleConnect()
+            }}
+            className='button'
+          >
+            <img style={{ width: '16px', marginRight: '.5em' }} className='icon' src={walletIcon} />
+            Connect wallet
+          </button>
+        )
+      }
     </div>
   )
 }

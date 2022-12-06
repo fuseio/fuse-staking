@@ -29,9 +29,9 @@ const GrayContainer = ({ title, estimatedAPR, end, modifier, symbol }) => {
         </div>
       </div>
       <div className='grid-x align-justify align-middle'>
-        <div className={classNames('value', { 'value--disabled': !accountAddress })}>
-          <span id='counter' />&nbsp;
-          {symbol}
+      <div className={classNames('value', { 'value--disabled': !accountAddress })}>
+        <span id='counter' />&nbsp;
+        {symbol}
         </div>
       </div>
     </div>

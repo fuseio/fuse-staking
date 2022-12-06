@@ -7,7 +7,7 @@ const ProgressPlugin = require('progress-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
-const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 
 const isDev = process.env.NODE_ENV === 'development'
 const sourceMap = isDev
@@ -98,7 +98,7 @@ const webpackConfig = {
             }
           }
         ]
-      }
+      },
     ]
   },
   resolve: {
@@ -171,8 +171,8 @@ const webpackConfig = {
 
 module.exports = (env, argv) => {
   if (argv.hot) {
-    webpackConfig.output.filename = '[name].[fullhash].js'
+    webpackConfig.output.filename = '[name].[fullhash].js';
   }
 
-  return webpackConfig
-}
+  return webpackConfig;
+};
