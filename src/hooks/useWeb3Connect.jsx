@@ -17,9 +17,9 @@ const providerOptions = {
   coinbasewallet: {
     package: CoinbaseWalletSDK,
     options: {
-      appName: "Fuse Staking",
+      appName: 'Fuse Staking',
       rpc: CONFIG.web3.fuseProvider,
-      chainId: 1,
+      chainId: 1
     }
   }
 }
