@@ -7,7 +7,6 @@ import { addressShortener } from '@/utils/format'
 import walletIcon from '@/assets/images/wallet.svg'
 import fuseLogoWhite from '@/assets/images/FuseLogo.png'
 import explorerIcon from '@/assets/images/explorer.svg'
-import stakingIcon from '@/assets/images/staking-icon.svg'
 
 const NavBar = ({ handleConnect, handleLogout }) => {
   const [isOpen, setMenuOpen] = useState(false)
