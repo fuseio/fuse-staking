@@ -58,15 +58,6 @@ const Footer = () => {
             )}
           />
           <HoverIcon
-            link='https://news.fuse.io'
-            Icon={() => (
-              <div className='image' style={{ backgroundImage: `url(${mediumIcon})` }} />
-            )}
-            Hover={() => (
-              <div className='image' style={{ backgroundImage: `url(${mediumIconHover})` }} />
-            )}
-          />
-          <HoverIcon
             link='https://discordapp.com/invite/jpPMeSZ'
             Icon={() => (
               <div className='image' style={{ backgroundImage: `url(${discordIcon})` }} />
@@ -87,7 +78,7 @@ const Footer = () => {
         </div>
       </div>
       <div className='footer__text cell medium-8 grid-x align-start'>
-        © 2022 Fuse. The Fuse network is a permissionless and border-less public ledger designed for easy integration of everyday payments.
+        © 2023 Fuse. The Fuse network is a permissionless and border-less public ledger designed for easy integration of everyday payments.
       </div>
     </footer>
   )
