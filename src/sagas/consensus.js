@@ -7,6 +7,7 @@ import {
   Consensus as ConsensusABI,
   BlockReward as BlockRewardABI
 } from '@/constants/abi'
+import validators from '../assets/validators/validators.json'
 import keyBy from 'lodash/keyBy'
 import omit from 'lodash/omit'
 import { balanceOfNative } from '@/actions/accounts'
@@ -113,6 +114,18 @@ function * fetchValidatorMetadata ({ address }) {
       ...{
         ...response.Node,
         ...validatorData,
+        name:
+          response.Node.name === 'Anonymous Validator'
+            ? response.Node.name
+            : validators[address].name,
+        image:
+          response.Node.name === 'Anonymous Validator'
+            ? ''
+            : validators[address].image,
+        website:
+          response.Node.name === 'Anonymous Validator'
+            ? ''
+            : validators[address].website,
         oldNode: false
       }
     }
