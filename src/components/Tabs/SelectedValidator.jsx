@@ -26,6 +26,7 @@ const SelectedValidator = () => {
   const validatorData = get(validators, validator)
   const address = get(validatorData, 'address')
   const name = get(validatorData, 'name')
+  const image = get(validatorData, 'image')
   const [isCopied, setCopied] = useClipboard(address, {
     successDuration: 1000
   })
@@ -34,7 +35,7 @@ const SelectedValidator = () => {
       <div className='selected-validator grid-x align-middle'>
         <img
           className='avatar'
-          src={`${CONFIG.api.boot}/getNodeLogo=${address}`}
+          src={require(`@/assets/images/logos/${image.split('/')[1]}`).default}
           onError={(e) => addDefaultSrc(e, address)}
         />
         <div className='grid-y align-top content'>
