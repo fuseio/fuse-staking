@@ -35,7 +35,7 @@ const SelectedValidator = () => {
       <div className='selected-validator grid-x align-middle'>
         <img
           className='avatar'
-          src={require(`@/assets/images/logos/${image.split('/')[1]}`).default}
+          src={image ? require(`@/assets/images/logos/${image.split('/')[1]}`).default : `${CONFIG.api.boot}/getNodeLogo=${address}`}
           onError={(e) => addDefaultSrc(e, address)}
         />
         <div className='grid-y align-top content'>
