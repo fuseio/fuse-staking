@@ -32,13 +32,12 @@ const ValidatorsList = () => {
     let rawData = showOnlyOldNodes
       ? filter(entities, ['oldNode', true])
       : showOnlyDelegators && showOnlyStaked
-        ? filter(
-          entities,
-          ({ yourStake, forDelegation }) => !!Number(yourStake) && forDelegation
-        )
-        : showOnlyStaked
-          ? filter(entities, ({ yourStake }) => !!Number(yourStake))
-          : filter(entities, ['oldNode', false])
+        ? filter(entities, ({ yourStake, forDelegation }) => !!Number(yourStake) && forDelegation)
+        : showOnlyDelegators
+          ? filter(entities, ['forDelegation', 1])
+          : showOnlyStaked
+            ? filter(entities, ({ yourStake }) => !!Number(yourStake))
+            : filter(entities, ['oldNode', false])
     rawData = rawData.map((validator) => {
       const { image } = validator
       if (image) {
@@ -89,7 +88,7 @@ const ValidatorsList = () => {
           stakeAmount,
           yourStake,
           website,
-          isOpen: formatWeiToNumber(fee) * 100 >= 15,
+          isOpen: forDelegation && formatWeiToNumber(fee) * 100 >= 15,
           oldNode
         })
       ),
