@@ -290,5 +290,10 @@
     "name": "Tectona I",
     "image": "logos/Tectona I.jpg",
     "website": "https://tectona.io/"
+  },
+  "0x8e39af73018fD51964bA3fc78B4dbdbf92278199": {
+    "name": "GoodValidator",
+    "image": "",
+    "website": "https://www.goodvalidator.com/"
   }
 }
