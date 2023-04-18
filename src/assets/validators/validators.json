@@ -286,7 +286,7 @@
     "image": "logos/Tectona II.jpg",
     "website": "https://tectona.io/"
   },
-  "0xAf86Bc535Bc3d652C2532FD03A765d716395F640":{
+  "0xAf86Bc535Bc3d652C2532FD03A765d716395F640": {
     "name": "Tectona I",
     "image": "logos/Tectona I.jpg",
     "website": "https://tectona.io/"
@@ -295,5 +295,15 @@
     "name": "GoodValidator",
     "image": "",
     "website": "https://www.goodvalidator.com/"
+  },
+  "0x4E9A7EFcE71af61a0c3b54Af77D6b94efc8Ea614": {
+    "name": "ToshioSpoor",
+    "image": "",
+    "website": ""
+  },
+  "0x54A4Bf1bE4D1CF94F23487665Ac0bC31F17418EA": {
+    "name": "0x54A4Bf1bE4D1CF94F23487665Ac0bC31F17418EA",
+    "image": "",
+    "website": ""
   }
 }
