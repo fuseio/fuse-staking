@@ -310,5 +310,10 @@
     "name": "0x54A4Bf1bE4D1CF94F23487665Ac0bC31F17418EA",
     "image": "",
     "website": ""
-  }
+  },
+  "0xa4899bcb672a7af5320e81cc651c8c7bbf730941": {
+    "name": "Blockchain Founders Fund II",
+    "image": "logos/Blockchain Founders Fund.jpg",
+    "website": "https://blockchainff.com/"
+  },
 }
